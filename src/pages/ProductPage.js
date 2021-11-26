@@ -1,0 +1,379 @@
+import { Button, Divider, Grid, TextField, Typography } from "@mui/material";
+import React, { useState } from "react";
+import MiniBar from "../components/organism/MiniBar";
+import NavBar from "../components/organism/NavBar";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Table from "@mui/material/Table";
+import EditIcon from "@mui/icons-material/Edit";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import DialogContentText from "@mui/material/DialogContentText";
+import ReactStars from "react-rating-stars-component";
+import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
+import cover from "../assets/images/cover.jpg";
+import Rating from "react-rating";
+import axios from "axios";
+import jwtDecode from "jwt-decode";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="down" ref={ref} {...props} />;
+});
+
+const ProductPage = () => {
+  const cartFromLocal = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  const [product, setProduct] = useState();
+  const [itemNo, setItemNo] = useState(1);
+
+  var url = window.location.pathname;
+  var id = url.substring(url.lastIndexOf("/") + 1);
+
+  let token = localStorage.getItem("token");
+  let userId = jwtDecode(token);
+  
+  console.log(userId)
+  console.log(userId._id);
+  let adminToken = localStorage.getItem("adminToken");
+
+  const plusItem = () => {
+    if (product?.stock > itemNo) setItemNo(itemNo + 1);
+  };
+
+  const minusItem = () => {
+    if (itemNo != 0) {
+      setItemNo(itemNo - 1);
+    }
+  };
+
+  let [array, setArray] = useState(cartFromLocal);
+  let [cartItem, setCartItem] = useState(cartItems);
+
+  const [open, setOpen] = React.useState(false);
+  const [openOrder, setOpenOrder] = React.useState(false);
+  const [openShipping, setOpenShipping] = React.useState(false);
+  const [address,setAddress] = React.useState('');
+  const [city,setCity] = React.useState('');
+  const [province,setProvince] = React.useState('');
+
+  let handleAddress = (e) => {
+    setAddress(e.target.value);
+  }
+  let handleCity = (e) => {
+    setCity(e.target.value);
+  }
+  let handleProvince = (e) => {
+    setProvince(e.target.value);
+  }
+
+
+  const handleClickOpen = (product) => {
+    if (array.find((e) => e.name == product.name)) {
+      console.log("Duplicate Item");
+    } else {
+      setArray([...array, product]);
+      setCartItem([...cartItem, { productId: product._id, quantity: itemNo }]);
+    }
+
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOrder = () => {
+    setOpen(false);
+    setOpenShipping(true);
+
+  };
+
+  const handleCloseOrder = () => {
+    setOpenOrder(false);
+  };
+
+  const handleCloseShipping = () => {
+    setOpenShipping(false);
+  };
+
+  const handleSuccessOrder = () => {
+    setOpenOrder(false);
+  };
+
+  /*   var newArray = array.filter(function (el) {
+      return el._id &&
+             el. &&
+             el.num_of_beds >=2 &&
+             el.num_of_baths >= 2.5;
+    });
+*/
+
+
+let handleShipping = () => {
+  let arr = {
+    houseNumber: address,
+    city: city,
+    country: province
+  };
+  axios
+    .patch(
+      `http://localhost:5000/api/users/${userId._id}`, arr,  {headers:{'Authorization':token}} )
+    .then(function (response) {
+      console.log("shipping success");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    setOpenShipping(false);
+    setOpenOrder(true);
+};
+
+
+let proceedPayment = () => {
+  let arr = {
+    items: [
+      {
+        productId: id,
+        quantity: itemNo,
+      },
+    ],
+  };
+  axios
+    .post(
+      `http://localhost:5000/api/orders`,
+      { items: cartItem },
+      { headers: { Authorization: token } }
+    )
+    .then(function (response) {
+      console.log("payment success");
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    handleCloseOrder();
+};
+let rating;
+
+  let getProduct = () => {
+    axios
+      .get(`http://localhost:5000/api/products/${id}`, {
+        headers: { Authorization: token },
+      })
+      .then(function (response) {
+        setProduct(response.data.data);
+        rating = response.data.data.ratings.value;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  React.useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(array));
+    localStorage.setItem("cartItems", JSON.stringify(cartItem));
+    getProduct();
+  }, [array, cartItem]);
+
+  console.log(product);
+  return (
+    <Grid container>
+      <Grid item md={12}>
+        <MiniBar />
+        <NavBar />
+      </Grid>
+      <Grid item md={12}>
+        <br />
+        <Grid container spacing={3}>
+          <Grid item md={1}></Grid>
+          <Grid item md={10}>
+            <Grid container spacing={3}>
+              {product?.images?.map((t) => (
+                <Grid item md={6}>
+                  <div style={{ width: "100%" }}>
+                    <img
+                      style={{ height: "200px", width: "80%" }}
+                      src={`https://fyptest.blob.core.windows.net/images/${t}`}
+                    />
+                  </div>
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+
+          <Grid item md={10}>
+            <div style={{ marginLeft: "20px", textAlign: "center" }}>
+              <div>
+                <Typography variant="subtitle2">
+                  Name: {product?.name}
+                </Typography>
+
+                <Typography variant="subtitle2">
+                  Category: {product?.category.name}
+                </Typography>
+
+                <Typography variant="subtitle2">
+                  Description: {product?.description}
+                </Typography>
+
+                <Typography variant="subtitle2">
+                  Price: {product?.price}
+                </Typography>
+
+                <Typography variant="subtitle2">
+                  Stock: {product?.stock}
+                </Typography>
+                <Typography
+                  style={{ display: "flex", justifyContent: "center" }}
+                  variant="subtitle2"
+                >
+                  <ReactStars value={5} size={24} activeColor="#ffd700" />
+                </Typography>
+              </div>
+              <br />
+              <br />
+              <Grid item md={2}></Grid>
+
+              <Button
+                disabled={product?.stock === 0 || product?.stock < 0}
+                onClick={() => handleClickOpen(product)}
+                variant="outlined"
+              >
+                {" "}
+                ADD TO CART{" "}
+              </Button>
+
+              <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleClose}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle>{"Shopping Cart"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    <TableContainer component={Paper}>
+                      <Table sx={{ minWidth: 450 }} aria-label="simple table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Product Name</TableCell>
+                            <TableCell align="right">Price</TableCell>
+                            <TableCell align="right">Stock</TableCell>
+                            <TableCell align="center">Size</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {array.map((row) => (
+                            <TableRow
+                              key={row.name}
+                              sx={{
+                                "&:last-child td, &:last-child th": {
+                                  border: 0,
+                                },
+                              }}
+                            >
+                              <TableCell component="th" scope="row">
+                                {row.name}
+                              </TableCell>
+                              <TableCell align="right">{row.price}</TableCell>
+                              <TableCell align="right">{row.stock}</TableCell>
+                              <TableCell align="center">
+                                <Button onClick={() => plusItem(row?.stock)}>
+                                  +
+                                </Button>{" "}
+                                &nbsp; {itemNo} &nbsp;{" "}
+                                <Button onClick={() => minusItem(row?.stock)}>
+                                  {" "}
+                                  -{" "}
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose}>Close</Button>
+                  <Button onClick={handleOrder}>Proceed</Button>
+                </DialogActions>
+              </Dialog>
+              <Dialog
+                open={openShipping}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleCloseShipping}
+                aria-describedby="alert-dialog-slide-description"
+              >
+                <DialogTitle style={{backgroundColor:'blueviolet',color:'white'}}>{"Shipping Address"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+
+                    <hr/>
+                    <br/>
+                    <TextField
+                     fullWidth label="Address"
+                     value={address}
+                     onChange={handleAddress} />
+
+                    <TextField 
+                    style={{marginTop:20}}
+                    fullWidth label="City" 
+                    value={city}
+                    onChange={handleCity}/>
+
+                    <TextField 
+                   style={{marginTop:20}}
+                    fullWidth label="Province" 
+                    value={province}
+                    onChange={handleProvince}
+                    />
+
+                    <Divider/>
+                    <br/>
+
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button variant="outlined" onClick={handleCloseShipping}>Disagree</Button>
+                  <Button variant="outlined" onClick={handleShipping}>Agree</Button>
+                </DialogActions>
+              </Dialog>
+              
+              <Dialog
+                open={openOrder}
+                TransitionComponent={Transition}
+                keepMounted
+                onClose={handleCloseOrder}
+                aria-describedby="alert-dialog-slide-description"
+              >
+             <DialogTitle>{"Payment Method"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-slide-description">
+                    <Button onClick={proceedPayment}>CASH</Button>
+                    <br />
+                    <Button>CARD</Button>
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseOrder}>Cancel</Button>
+
+                </DialogActions>
+                            </Dialog> 
+            </div>
+          </Grid>
+          <Grid item md={1}></Grid>
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};
+
+export default ProductPage;
