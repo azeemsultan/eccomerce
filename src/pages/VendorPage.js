@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -40,7 +39,7 @@ import jwtDecode from "jwt-decode";
 const drawerWidth = 240;
 
 function VendorPage(props) {
-  const { window } = props;
+  const { jindow } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [collection, setCollection] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
@@ -216,10 +215,10 @@ let handleOrders = () => {
     setPrice(event.target.value);
   };
 
+  console.log(window.location)
+
   let deleteProduct = (id) => {
-    setTimeout(function() {
-      window.location.href = '/admin';
-    }, 2000);
+
     axios
     .delete(`http://localhost:5000/api/products/${id}`,  {
       headers: {
@@ -232,6 +231,9 @@ let handleOrders = () => {
         variant: 'success',
         autoHideDuration: 2000
       });
+      setTimeout(function() {
+        window.location.href = '/vendor';
+      }, 2000);
     })
     .catch(function (error) {
       console.log(error);
@@ -253,7 +255,7 @@ let handleOrders = () => {
         autoHideDuration: 2000
       });
       setTimeout(function() {
-        window.location.href = '/admin';
+        window.location.href = '/vendor';
       }, 2000);
 
     })
@@ -277,7 +279,7 @@ let handleOrders = () => {
         autoHideDuration: 2000
       });
       setTimeout(function() {
-        window.location.href = '/admin';
+        window.location.href = '/vendor';
       }, 2000);
 
     })
@@ -320,7 +322,7 @@ let handleOrders = () => {
           autoHideDuration: 2000
         });
         setTimeout(function() {
-          window.location.href = '/admin';
+          window.location.href = '/vendor';
         }, 2000);
   
       })
@@ -485,7 +487,7 @@ console.log(collection);
         autoHideDuration: 2000
       });
       setTimeout(function() {
-        window.location.href = '/admin';
+        window.location.href = '/vendor';
       }, 2000);
 
     })
@@ -529,6 +531,7 @@ console.log(collection);
       </List>
         
       <Divider />
+
       <List onClick={handleNews}>
           <ListItem>
             <ListItemIcon>
@@ -560,7 +563,7 @@ console.log(collection);
   );
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    jindow !== undefined ? () => jindow().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -913,7 +916,7 @@ console.log(collection);
       />
  </div>
 </div>
-<Button variant="outlined" onClick={submitNews}>Add News</Button>
+<Button variant="outlined"  style={{marginTop:10}} onClick={submitNews}>Add News</Button>
 </div>
 </TableContainer>
     </Box>
@@ -1098,7 +1101,7 @@ VendorPage.propTypes = {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window: PropTypes.func,
+  jindow: PropTypes.func,
 };
 
 export default VendorPage;

@@ -167,14 +167,16 @@ export default function NavBar() {
           >
             <MenuIcon />
           </IconButton>
+          <a href="/" style={{textDecoration:'none',color:'white'}}>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            Shopify
           </Typography>
+          </a>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

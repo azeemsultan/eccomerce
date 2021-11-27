@@ -39,7 +39,7 @@ import FileUpload from "../components/organism/fileUpload";
 const drawerWidth = 240;
 
 function AdminPage(props) {
-  const { window } = props;
+  const { jindow } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [collection, setCollection] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
@@ -225,6 +225,9 @@ let handleOrders = () => {
         variant: 'success',
         autoHideDuration: 2000
       });
+      setTimeout(function() {
+        window.location.href = '/admin';
+      }, 2000);
 
     })
     .catch(function (error) {
@@ -245,7 +248,9 @@ let handleOrders = () => {
         variant: 'success',
         autoHideDuration: 2000
       });
-
+      setTimeout(function() {
+        window.location.href = '/admin';
+      }, 2000);
 
     })
     .catch(function (error) {
@@ -268,6 +273,9 @@ let handleOrders = () => {
         autoHideDuration: 2000
       });
 
+      setTimeout(function() {
+        window.location.href = '/admin';
+      }, 2000);
 
     })
     .catch(function (error) {
@@ -294,6 +302,9 @@ let handleOrders = () => {
           variant: 'success',
           autoHideDuration: 2000
         });
+        setTimeout(function() {
+          window.location.href = '/admin';
+        }, 2000);
 
       })
       .catch(function (error) {
@@ -324,7 +335,9 @@ let handleOrders = () => {
           autoHideDuration: 2000
         });
    
-  
+        setTimeout(function() {
+          window.location.href = '/admin';
+        }, 2000);
       })
       .catch(function (error) {
         console.log(error);
@@ -351,6 +364,9 @@ let handleOrders = () => {
           variant: 'success',
           autoHideDuration: 2000
         });
+        setTimeout(function() {
+          window.location.href = '/admin';
+        }, 2000);
     
       })
       .catch(function (error) {
@@ -513,6 +529,9 @@ console.log(collection);
         variant: 'success',
         autoHideDuration: 2000
       });
+      setTimeout(function() {
+        window.location.href = '/admin';
+      }, 2000);
  
     })
     .catch(function (error) {
@@ -593,7 +612,7 @@ console.log(collection);
   );
 
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    jindow !== undefined ? () => jindow().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -1016,7 +1035,7 @@ AdminPage.propTypes = {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window: PropTypes.func,
+  jindow: PropTypes.func,
 };
 
 export default AdminPage;

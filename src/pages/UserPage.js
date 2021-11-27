@@ -14,13 +14,15 @@ import Typography from "@mui/material/Typography";
 import FileUpload from "../components/organism/fileUpload";
 import jwtDecode from "jwt-decode";
 import {browserHistory} from "react-router";
+import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router-dom';
 import axios from "axios";
 
 const drawerWidth = 240;
 
 function UserPage(props) {
-  const { window } = props;
+  const { enqueueSnackbar } = useSnackbar();
+  const { jindow } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [img, setImg] = React.useState();
   const [email,setEmail] = React.useState('');
@@ -29,6 +31,7 @@ function UserPage(props) {
   const [listOrders,setListOrders] = React.useState();
   const [newsCover,setNewsCover] = React.useState('');
   
+
   let token = localStorage.getItem('token');
   let decode = jwtDecode(token);
 
@@ -50,8 +53,13 @@ function UserPage(props) {
     }
     axios.patch(`http://localhost:5000/api/users/${decode._id}`, obj, {headers:{'Authorization':token}})
     .then(function (response) {
-     console.log('information updated');
-     history.push('/user')
+      enqueueSnackbar('Information updated successfully!', {
+        variant: 'success',
+        autoHideDuration: 2000
+      });
+      setTimeout(function() {
+        window.location.href = '/vendor';
+      }, 2000);
 
     })
     .catch(function (error) {
@@ -82,7 +90,7 @@ function UserPage(props) {
   let savePicture = () =>{
     console.log('saving image')
     let obj = {
-      country: newsCover
+      appartment: newsCover[0]
     }
     axios.patch(`http://localhost:5000/api/users/${decode._id}`, obj, {headers:{'Authorization':token}})
     .then(function (response) {
@@ -102,7 +110,7 @@ function UserPage(props) {
       setEmail(response.data.data.email);
       setName(response.data.data.name);
       setPhone(response.data.data.phoneNumber);
-      setNewsCover(response.data.data.country);
+      setNewsCover(response.data.data.appartment);
 
     })
     .catch(function (error) {
@@ -122,7 +130,7 @@ React.useEffect(() => {
 
   console.log(newsCover)
   const container =
-    window !== undefined ? () => window().document.body : undefined;
+    jindow !== undefined ? () => jindow().document.body : undefined;
 
   return (
     <>
@@ -181,7 +189,7 @@ React.useEffect(() => {
     <div style={{display:'flex'}}>
       <div style={{margin:'0px auto'}}>
       <FileUpload 
-        up={img}
+        up={newsCover}
         setUp={setNewsCover}
         temp={newsCover}
         savePicture={savePicture}

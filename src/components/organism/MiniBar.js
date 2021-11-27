@@ -10,7 +10,7 @@ const MiniBar = () => {
               <Typography style={{marginLeft:'30px'}}>
                   Hi !
               </Typography>
-              <Link style={{marginLeft:'30px'}}>
+              <Link href="/login" style={{marginLeft:'30px'}}>
               Sign In/ Sign Up
               </Link>
               <Link style={{marginLeft:'30px'}}>
@@ -20,7 +20,7 @@ const MiniBar = () => {
               <Link style={{marginLeft:'30px'}}>
               Ship To
               </Link>
-              <Link style={{marginLeft:'30px'}}>
+              <Link href="/user" style={{marginLeft:'30px'}}>
               My Account
               </Link>
               </div>

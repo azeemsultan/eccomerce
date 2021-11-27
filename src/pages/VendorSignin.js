@@ -47,6 +47,7 @@ export default function VendorSignIn() {
         })
         .catch(function (error) {
           console.log(error);
+          
         });
       
         

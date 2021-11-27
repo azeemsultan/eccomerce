@@ -15,9 +15,7 @@ const HomePageList = () => {
         <li>
           <DropDown title={list[0].title} />
         </li>
-        <li>
-           <a style={{textDecoration:'none'}} href="/shipping"> <Button>Ready to ship</Button> </a>
-        </li>
+     
         <li>
             <Button>Wishlist</Button>
         </li>
@@ -25,7 +23,9 @@ const HomePageList = () => {
             <Button>Services & Help</Button>
         </li>
         <li>
+            <a style={{textDecoration:'none'}} href="/blog">
             <Button>Blogs</Button>
+            </a>
         </li>
   
     </ul>

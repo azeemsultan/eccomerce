@@ -17,16 +17,20 @@ import DialogContentText from "@mui/material/DialogContentText";
 import ReactStars from "react-rating-stars-component";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
+import { useSnackbar } from 'notistack';
+
 import cover from "../assets/images/cover.jpg";
 import Rating from "react-rating";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
 const ProductPage = () => {
+  const { enqueueSnackbar } = useSnackbar();
   const cartFromLocal = JSON.parse(localStorage.getItem("cart")) || [];
   const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
   const [product, setProduct] = useState();
@@ -76,6 +80,7 @@ const ProductPage = () => {
   const handleClickOpen = (product) => {
     if (array.find((e) => e.name == product.name)) {
       console.log("Duplicate Item");
+      
     } else {
       setArray([...array, product]);
       setCartItem([...cartItem, { productId: product._id, quantity: itemNo }]);
@@ -126,6 +131,7 @@ let handleShipping = () => {
       `http://localhost:5000/api/users/${userId._id}`, arr,  {headers:{'Authorization':token}} )
     .then(function (response) {
       console.log("shipping success");
+      
     })
     .catch(function (error) {
       console.log(error);
@@ -151,7 +157,13 @@ let proceedPayment = () => {
       { headers: { Authorization: token } }
     )
     .then(function (response) {
-      console.log("payment success");
+      enqueueSnackbar('Order placed!', {
+        variant: 'success',
+        autoHideDuration: 2000
+      });
+      setTimeout(function() {
+        window.location.href = '/user';
+      }, 2000);
     })
     .catch(function (error) {
       console.log(error);
@@ -174,6 +186,7 @@ let rating;
       });
   };
 
+  console.log(window.location)
   React.useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(array));
     localStorage.setItem("cartItems", JSON.stringify(cartItem));

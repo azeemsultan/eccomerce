@@ -185,9 +185,7 @@ console.log(props.id)
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
-        </DialogTitle>
+
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
           <Typography paragraph>Edit Product</Typography>
@@ -313,7 +311,6 @@ console.log(props.id)
         <div style={{ display: "flex", marginTop: 20 }}>
           <div> IMG </div>
 
-          <div style={{ marginLeft: 600 }}> COVER </div>
         </div>
 
         <div style={{marginTop:30}}>

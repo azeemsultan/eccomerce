@@ -40,6 +40,7 @@ const HomeScreen = () => {
   },[])
 
   console.log(prod)
+  
 
   return (
    
