@@ -54,7 +54,7 @@ const CustomizedProduct = () => {
  
   return (
     <div>
-      <PerfectScrollbar onScrollX>
+      
         <Typography variant="h6">
         Customized products
         </Typography>
@@ -71,7 +71,7 @@ const CustomizedProduct = () => {
         );
       })}
     </div>
-    </PerfectScrollbar>
+
     </div>
   );
 };

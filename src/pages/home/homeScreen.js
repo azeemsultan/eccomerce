@@ -10,6 +10,7 @@ import coverImage from "../../assets/images/cover.jpg"
 import HomeListItems from "../../components/organism/HomeListItems";
 import ProductPage from "../ProductPage";
 import axios from "axios";
+import DemoCarousel from "./Carousel";
 
 
 const HomeScreen = () => {
@@ -40,7 +41,7 @@ const HomeScreen = () => {
   },[])
 
   console.log(prod)
-  
+
 
   return (
    
@@ -50,9 +51,10 @@ const HomeScreen = () => {
       <Grid container>
       <Grid item md={12}>
         <MiniBar />
-        <NavBar />
       </Grid>
-
+      <Grid item md={12} xs={12} sm={12}>
+      <NavBar />
+      </Grid>
     {  /*  Categories Buttons   */}
       <Grid item md={1}></Grid>
 
@@ -72,12 +74,17 @@ const HomeScreen = () => {
        <div >
            <img style={{width:'95%',height:'100%',paddingTop:'10px',borderRadius:'9px'}} src={coverImage} />
        </div>
-
       </Grid>
       <Grid item md={3}>
       <SideList style={{marginLeft:'20px'}}/>
       </Grid>
-
+      <Grid item md={1}></Grid>
+      <Grid item md={1}></Grid>
+      <Grid item md={10} style={{marginTop:20}}> 
+      <DemoCarousel
+/>
+      </Grid>
+      <Grid item md={1}></Grid>
       <Grid item md={1}></Grid>
 
       <Grid item md={1}></Grid>
@@ -85,17 +92,19 @@ const HomeScreen = () => {
       <Grid item md={1}></Grid>
   {    /*Customized Product Section */}
 
-      <Grid item md={1}></Grid>
+
+
+
+<Grid container>
+<Grid item md={1}></Grid>
 
 <Grid item md={10}>
  <CustomizedProduct/>
 </Grid>
-
-
-<Grid item md={1}></Grid>
+</Grid>
 
 {/* Categories List Items */}
-<Grid item md={1}></Grid>
+
  <Grid item md={11}>
   <HomeListItems />
  </Grid>

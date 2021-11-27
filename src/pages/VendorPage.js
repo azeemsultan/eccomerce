@@ -17,7 +17,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { TextField, Button, Avatar } from "@mui/material";
+import { TextField, Button, Avatar, Grid } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -54,7 +54,7 @@ function VendorPage(props) {
   const [description , setDescription] = React.useState('');
   const [stock , setStock] = React.useState('');
   const [price , setPrice] = React.useState('');
-  const [productBoolean,setProductBoolean] = React.useState(true);
+  const [productBoolean,setProductBoolean] = React.useState(false);
   const [listProductBoolean, setListProductBoolean] = React.useState(false);
   const [listCategoriesBoolean, setListCategoriesBoolean] = React.useState(false);
   const [listUserBoolean, setListUserBoolean] = React.useState(false);
@@ -71,6 +71,20 @@ function VendorPage(props) {
   const [newsCover,setNewsCover] = React.useState();
   const { enqueueSnackbar } = useSnackbar();
   const [listOrders,setListOrders] = React.useState();
+  const [infoBool,setInfoBool] = React.useState(true);
+  const [vName,setVName] = React.useState('');
+  const [phone,setPhone] = React.useState('');
+  const [email,setEmail] = React.useState('');
+  const [delivery,setDelivery] = React.useState('');
+
+
+  const handleVName=(e)=>{
+    setVName(e.target.value);
+  }
+
+  const handlePhone=(e)=>{
+    setPhone(e.target.value);
+  }
 
 
   let handleChangeNews = (e) =>{
@@ -81,6 +95,9 @@ function VendorPage(props) {
     setNewsDescription(e.target.value)
   }
 
+  let handleDelivery = (e) =>{
+    setDelivery(e.target.value)
+  }
 
 
   let uploadState = (e) => {
@@ -100,11 +117,58 @@ function VendorPage(props) {
   }
 
 
+  let getVendor = () =>{
+    axios.get(`http://localhost:5000/api/vendors/${decode._id}`, {headers:{'Authorization':vendorToken}})
+    .then(function (response) {
+      setEmail(response.data.data.email);
+      setVName(response.data.data.name);
+      setPhone(response.data.data.phoneNumber);
+      setDelivery(response.data.data.cardExpire);
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  let saveInfo = () =>{
+    let obj = {
+      name: vName,
+      phoneNumber: phone,
+      cardExpire: delivery
+    }
+    axios.patch(`http://localhost:5000/api/vendors/${decode._id}`, obj, {headers:{'Authorization':vendorToken}})
+    .then(function (response) {
+      enqueueSnackbar('Information updated successfully!', {
+        variant: 'success',
+        autoHideDuration: 2000
+      });
+      setTimeout(function() {
+        window.location.href = '/vendor';
+      }, 2000);
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  }
 
 
+  let handleInfo = () => {
+    setInfoBool(true);
+    setProductBoolean(false);
+    setListProductBoolean(false);
+    setListCategoriesBoolean(false);
+    setListUserBoolean(false);
+    setNewsBoolean(false);
+    setOrdersBoolean(false)
+    setNewsBooleanList(false);
+}
 
 
   let handleProduct = () => {
+    setInfoBool(false);
       setProductBoolean(true);
       setListProductBoolean(false);
       setListCategoriesBoolean(false);
@@ -115,6 +179,7 @@ function VendorPage(props) {
   }
 
   let handleListProduct = () => {
+    setInfoBool(false);
     setProductBoolean(false);
     setListProductBoolean(true);
     setListCategoriesBoolean(false);
@@ -126,6 +191,7 @@ function VendorPage(props) {
 
 
 let handleListCategories = () => {
+  setInfoBool(false);
     setProductBoolean(false);
     setListProductBoolean(false);
     setListCategoriesBoolean(true);
@@ -137,6 +203,7 @@ let handleListCategories = () => {
 
 
 let handleListUser = () => {
+  setInfoBool(false);
     setProductBoolean(false);
     setListProductBoolean(false);
     setListCategoriesBoolean(false);
@@ -147,6 +214,7 @@ let handleListUser = () => {
 }
 
 let handleNews = () => {
+  setInfoBool(false);
     setProductBoolean(false);
     setListProductBoolean(false);
     setListCategoriesBoolean(false);
@@ -157,6 +225,7 @@ let handleNews = () => {
 }
 
 let handleNewsList = () => {
+  setInfoBool(false);
   setProductBoolean(false);
   setListProductBoolean(false);
   setListCategoriesBoolean(false);
@@ -168,6 +237,7 @@ let handleNewsList = () => {
 
 
 let handleOrders = () => {
+  setInfoBool(false);
     setProductBoolean(false);
     setListProductBoolean(false);
     setListCategoriesBoolean(false);
@@ -463,6 +533,7 @@ console.log(collection);
     getUsers();
     getNews();
     getOrders();
+    getVendor();
   }, []);
 
 
@@ -471,7 +542,7 @@ console.log(collection);
     let obj ={
       title: news,
       description: newsDescription,
-      cover: newsCover,
+      cover: newsCover[0],
       author: "Anonymous"
     }
     axios
@@ -505,6 +576,14 @@ console.log(collection);
     </div>
       <Toolbar />
       <Divider />
+      <List onClick={handleInfo} >
+          <ListItem >
+            <ListItemIcon>
+             Update Information
+            </ListItemIcon>
+            <ListItemText  />
+          </ListItem>
+      </List>
       <List onClick={handleProduct} >
           <ListItem >
             <ListItemIcon>
@@ -795,6 +874,69 @@ console.log(collection);
      
       </Box>
            )}
+
+{ infoBool   && (
+          <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: { sm: `calc(100% - ${drawerWidth}px)` },
+          }}
+        >
+          <Toolbar />
+          <Grid container>
+          <Grid item md={6} xs={12}>
+        <div style={{marginTop:'60px',marginLeft:'30px',marginRight:'30px'}}>
+        <div style={{ display: "flex", marginTop: 30 }}>
+        <TextField
+            style={{cursor:'not-allowed !important'}}
+            disabled={true}
+            fullWidth
+            name="Email"
+            id="Email"
+            label="Email"
+            value={email}
+          />
+        </div>
+        <div style={{ display: "flex", marginTop: 30 }}>
+        <TextField
+            fullWidth
+            name="Name"
+            id="Name"
+            label="Name"
+            value={vName}
+            onChange={handleVName}
+          />
+        </div>
+        <div style={{ display: "flex", marginTop: 30 }}>
+        <TextField
+            fullWidth
+            name="phone"
+            id="phone"
+            label="phone"
+            value={phone}
+            onChange={handlePhone}
+          />
+        </div>
+        <div style={{ display: "flex", marginTop: 30 }}>
+        <TextField
+            fullWidth
+            name="Delivery"
+            id="Delivery"
+            label="Delivery"
+            value={delivery}
+            onChange={handleDelivery}
+          />
+        </div>
+        <div style={{ display: "flex", marginTop: 30 }}>
+        <Button onClick={saveInfo} style={{backgroundColor:'#44adbd',color:'white',width:'100px'}} >Save</Button>
+        </div>
+        </div>
+        </Grid>
+          </Grid>
+         </Box>
+    )}
     
     { listProductBoolean   && (
           <Box
@@ -909,7 +1051,7 @@ console.log(collection);
     
     <div>
       <FileUpload
-        up={img}
+        up={newsCover}
         setUp={setNewsCover}
         temp={newsCover}
        // success={success}

@@ -65,11 +65,9 @@ const HomeListItems = () => {
     <Grid item md={12}>
         <br/>
     </Grid>
-      <Grid item md={2} style={{ marginLeft: -15 }}>
-        <Typography variant="h5">Products</Typography>
-        <br />
-        <SimpleCard type="Product List" />
-      </Grid>
+    <Grid item md={1}>
+
+    </Grid>
     <Grid item md={10}>
       <Grid container spacing={3}>
       {prod.map(function (item, i) {
@@ -88,6 +86,9 @@ const HomeListItems = () => {
         );
       })}
       </Grid>
+      <Grid item md={1}>
+
+</Grid>
       </Grid>
       <Grid item md={12}>
         <br />

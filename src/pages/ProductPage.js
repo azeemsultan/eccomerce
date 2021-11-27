@@ -18,7 +18,7 @@ import ReactStars from "react-rating-stars-component";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useSnackbar } from 'notistack';
-
+import DemoCarousel from '../components/organism/Carousel'
 import cover from "../assets/images/cover.jpg";
 import Rating from "react-rating";
 import axios from "axios";
@@ -65,6 +65,32 @@ const ProductPage = () => {
   const [address,setAddress] = React.useState('');
   const [city,setCity] = React.useState('');
   const [province,setProvince] = React.useState('');
+
+
+  const ratingChanged = (newRating) => {
+    let obj = {
+      rating: newRating
+    };
+
+    (function () {
+      axios
+      .post(
+        `http://localhost:5000/api/products/ratings/${id}`,obj, {headers:{'Authorization':token}} )
+      .then(function (response) {
+        console.log("rating success");
+        
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    })();
+    enqueueSnackbar('Rating placed!', {
+      variant: 'success',
+      autoHideDuration: 2000
+    });
+
+
+  }
 
   let handleAddress = (e) => {
     setAddress(e.target.value);
@@ -206,52 +232,52 @@ let rating;
           <Grid item md={1}></Grid>
           <Grid item md={10}>
             <Grid container spacing={3}>
-              {product?.images?.map((t) => (
-                <Grid item md={6}>
-                  <div style={{ width: "100%" }}>
-                    <img
-                      style={{ height: "200px", width: "80%" }}
-                      src={`https://fyptest.blob.core.windows.net/images/${t}`}
-                    />
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
+              <br/>
+              <Grid item md={1}>
 
-          <Grid item md={10}>
-            <div style={{ marginLeft: "20px", textAlign: "center" }}>
-              <div>
-                <Typography variant="subtitle2">
+              </Grid>
+              <Grid item md={10}>
+              <DemoCarousel image={product?.images} />
+              </Grid>
+              <Grid item md={1}>
+
+</Grid>
+             
+      <Grid item md={1}>
+
+      </Grid>
+      <Grid item md={10}>
+      <div>
+                <Typography variant="subtitle1">
                   Name: {product?.name}
                 </Typography>
 
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle1">
                   Category: {product?.category.name}
                 </Typography>
 
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle1">
                   Description: {product?.description}
                 </Typography>
 
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle1">
                   Price: {product?.price}
                 </Typography>
 
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle1">
                   Stock: {product?.stock}
                 </Typography>
                 <Typography
-                  style={{ display: "flex", justifyContent: "center" }}
+                  
                   variant="subtitle2"
                 >
-                  <ReactStars value={5} size={24} activeColor="#ffd700" />
+                  <ReactStars 
+                  onChange={ratingChanged}
+                  value={5} size={24} activeColor="#ffd700" />
                 </Typography>
               </div>
-              <br />
-              <br />
-              <Grid item md={2}></Grid>
 
+              
               <Button
                 disabled={product?.stock === 0 || product?.stock < 0}
                 onClick={() => handleClickOpen(product)}
@@ -260,6 +286,18 @@ let rating;
                 {" "}
                 ADD TO CART{" "}
               </Button>
+      </Grid>
+      <Grid item md={1}></Grid>
+            </Grid>
+          </Grid>
+          <Grid item md={1}></Grid>
+          <Grid item md={10}>
+            <div style={{ marginLeft: "20px",}}>
+             
+              <br />
+              <br />
+              <Grid item md={2}></Grid>
+
 
               <Dialog
                 open={open}
@@ -355,8 +393,8 @@ let rating;
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button variant="outlined" onClick={handleCloseShipping}>Disagree</Button>
-                  <Button variant="outlined" onClick={handleShipping}>Agree</Button>
+                  <Button variant="outlined" onClick={handleCloseShipping}>Cancel</Button>
+                  <Button variant="outlined" onClick={handleShipping}>Proceed</Button>
                 </DialogActions>
               </Dialog>
               

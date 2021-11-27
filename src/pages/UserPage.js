@@ -58,7 +58,7 @@ function UserPage(props) {
         autoHideDuration: 2000
       });
       setTimeout(function() {
-        window.location.href = '/vendor';
+        window.location.href = '/user';
       }, 2000);
 
     })
