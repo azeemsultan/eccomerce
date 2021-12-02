@@ -82,24 +82,7 @@ export default function NavBar() {
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
+<div></div>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -158,15 +141,7 @@ export default function NavBar() {
     <Box sx={{ flexGrow: 1}}>
       <AppBar style={{width:'100%'}} position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+    
           <a href="/" style={{textDecoration:'none',color:'white'}}>
           <Typography
             variant="h6"
