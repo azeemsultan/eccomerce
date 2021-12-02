@@ -71,18 +71,18 @@ const HomeScreen = () => {
       <Grid item md={1}></Grid>
 
       <Grid item md={7}>
-       <div >
-           <img style={{width:'95%',height:'100%',paddingTop:'10px',borderRadius:'9px'}} src={coverImage} />
+       <div style={{marginRight:20}}>
+       <DemoCarousel
+/>
        </div>
       </Grid>
       <Grid item md={3}>
-      <SideList style={{marginLeft:'20px'}}/>
+      <SideList style={{marginLeft:'40px'}}/>
       </Grid>
       <Grid item md={1}></Grid>
       <Grid item md={1}></Grid>
       <Grid item md={10} style={{marginTop:20}}> 
-      <DemoCarousel
-/>
+
       </Grid>
       <Grid item md={1}></Grid>
       <Grid item md={1}></Grid>
@@ -105,7 +105,7 @@ const HomeScreen = () => {
 
 {/* Categories List Items */}
 
- <Grid item md={11}>
+ <Grid item md={11  }>
   <HomeListItems />
  </Grid>
 

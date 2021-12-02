@@ -1,5 +1,5 @@
-import { Grid, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { Grid,Button, TextField, Typography } from "@mui/material";
+import React, { useState, useEffect, useMemo } from "react";
 import Select from "../atoms/Select";
 import DetailCard from '../atoms/detailCard'
 import axios from "axios";
@@ -8,6 +8,9 @@ import axios from "axios";
 const CategoriesItems = () => {
 
   const [products,setProducts] = useState([]);
+  const [minPrice,setMinPrice] = useState(0);
+  const [maxPrice,setMaxPrice] = useState(0);
+
   let token = localStorage.getItem("token");
   var url = window.location.pathname;
   var category = url.substring(url.lastIndexOf("/") + 1);
@@ -15,6 +18,15 @@ const CategoriesItems = () => {
   console.log(link);
 
   console.log(category);
+
+  let handleMinPrice = (e) =>
+  {
+    setMinPrice(e.target.value);
+  }
+  let handleMaxPrice = (e) => {
+    setMaxPrice(e.target.value);
+  }
+
 
   let getCategoryItems = () => {
     axios.get(`http://localhost:5000/api/products`,{headers: { Authorization: token }})
@@ -27,9 +39,26 @@ const CategoriesItems = () => {
     });
   }
 
+  let handleFilter = () =>{
+    
+    axios.get('http://localhost:5000/api/products/search/advance?minPrice&maxPrice',
+    {params:{minPrice,maxPrice}},{headers: { 'Authorization': token }})
+    .then(function (response) {
+      console.log(response);
+      setProducts(response.data.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  
   useEffect(()=>{
     getCategoryItems();
   },[])
+
+  useEffect(()=>{
+
+  },[products])
 
 
   return (
@@ -51,13 +80,36 @@ const CategoriesItems = () => {
       }
         </Typography>
       </Grid>
-      <Grid item md={9}></Grid>
-      <Grid item md={3}>
+
+      <Grid item md={7}>
           <div style={{display:'flex'}}>
         <label style={{marginRight:'20px'}}>Sort by:</label> 
         <Select />
+
+        <TextField
+        style={{marginLeft:20}}
+        label="Min price"
+        value={minPrice}
+        onChange={handleMinPrice}
+        />
+
+<TextField
+        style={{marginLeft:20}}
+        label="Max price"
+        value={maxPrice}
+        onChange={handleMaxPrice}
+        />
+
+<TextField
+        style={{marginLeft:20}}
+        label="Category"
+        />
         </div>
+        <Button onClick={handleFilter}>
+          Apply
+        </Button>
       </Grid>
+      <Grid item md={5}></Grid>
       <Grid item md={12}>
           <br/>
           <br/>

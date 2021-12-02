@@ -17,8 +17,8 @@ const MiniBar = () => {
               Help & Contact
               </Link>
               <div style={{position:'absolute',right:50}}>
-              <Link style={{marginLeft:'30px'}}>
-              Ship To
+              <Link href="/login" style={{marginLeft:'30px'}}>
+              Logout
               </Link>
               <Link href="/user" style={{marginLeft:'30px'}}>
               My Account

@@ -2,18 +2,40 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import axios from 'axios';
+import CategoriesItems from '../organism/CategoriesItemsList';
 
 export default function DropDown(props) {
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const [category,setCategory] = React.useState([]);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
- 
   };
   const handleClose = () => {
     //setAnchorEl(null);
   };
 
+  let token = localStorage.getItem('token');
+
+
+  let getCategories = () =>{
+    axios.get(`http://localhost:5000/api/categories`, {headers:{'Authorization':token}})
+    .then(function (response) {
+      setCategory(response.data.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+React.useEffect(() => {
+getCategories();
+
+}, [])
+
+console.log('categories are here',category)
   return (
     <div>
       <Button
@@ -34,24 +56,13 @@ export default function DropDown(props) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <a href="/category/machinery" style={{textDecoration:'none'}} >
-        <MenuItem  onClick={handleClose}>Machinery</MenuItem>
-        </a>
-        <a href="/category/electronics" style={{textDecoration:'none'}} >
-        <MenuItem onClick={handleClose}>Consumer Electronics</MenuItem>
-        </a>
-        <a href="/category/home_appliance" style={{textDecoration:'none'}} >
-        <MenuItem  onClick={handleClose}>Home Appliances</MenuItem>
-        </a>
-        <a href="/category/vehicle" style={{textDecoration:'none'}} >
-        <MenuItem  onClick={handleClose}>Vehicle & Accessories</MenuItem>
-        </a>
-        <a href="/category/entertainment" style={{textDecoration:'none'}} >
-        <MenuItem  onClick={handleClose}>Sports & Entertainment</MenuItem>
-        </a>
-        <a href="/category/apparel" style={{textDecoration:'none'}} >
-        <MenuItem  onClick={handleClose}>Apparel & Fabric</MenuItem>
-        </a>
+        {category?.map((item,i)=>{
+          return(
+          <a href={`/category/${item.name}`} style={{textDecoration:'none'}}>
+              <MenuItem  onClick={handleClose}>{item.name}</MenuItem>
+            </a>
+          )
+        })}
       </Menu>
     </div>
   );

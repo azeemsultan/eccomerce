@@ -257,6 +257,30 @@ let handleOrders = () => {
       console.log(error);
     });
   }
+
+  
+  let deleteNews = (id) => {
+    axios
+    .delete(`http://localhost:5000/api/news/${id}`,  {
+      headers: {
+        'Authorization': admintoken,
+        'Content-Type': 'application/json',
+      },
+    })
+    .then(function (response) {
+      enqueueSnackbar('News deleted successfully!', {
+        variant: 'success',
+        autoHideDuration: 2000
+      });
+      setTimeout(function() {
+        window.location.href = '/admin';
+      }, 2000);
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
   
 
   let deleteCategory = (id) => {
@@ -922,7 +946,7 @@ console.log(collection);
           <TableCell component="th" scope="row">
             {row.title}
           </TableCell>
-          <TableCell align="right"><DeleteIcon onClick={()=>deleteUser(row._id)}/></TableCell>
+          <TableCell align="right"><DeleteIcon onClick={()=>deleteNews(row._id)}/></TableCell>
         </TableRow>
       ))}
     </TableBody>

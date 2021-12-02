@@ -7,22 +7,32 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Table from "@mui/material/Table";
 import EditIcon from "@mui/icons-material/Edit";
+import AbcIcon from '@mui/icons-material/Abc';
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
+import CategoryIcon from '@mui/icons-material/Category';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import Filter7Icon from '@mui/icons-material/Filter7';
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import DialogContentText from "@mui/material/DialogContentText";
 import ReactStars from "react-rating-stars-component";
+import DescriptionIcon from '@mui/icons-material/Description';
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
 import { useSnackbar } from 'notistack';
 import DemoCarousel from '../components/organism/Carousel'
 import cover from "../assets/images/cover.jpg";
 import Rating from "react-rating";
+import PersonIcon from '@mui/icons-material/Person';
+import EmailIcon from '@mui/icons-material/Email';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { flexbox } from "@mui/system";
+import { Money } from "@material-ui/icons";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -247,25 +257,26 @@ let rating;
 
       </Grid>
       <Grid item md={10}>
+        <div style={{display:'flex'}}>
       <div>
                 <Typography variant="subtitle1">
-                  Name: {product?.name}
+                  <AbcIcon style={{color:'#3c568f'}} /> &nbsp; &nbsp; Name: {product?.name}
                 </Typography>
 
                 <Typography variant="subtitle1">
-                  Category: {product?.category.name}
+                 <CategoryIcon style={{color:'#3c568f'}} />  &nbsp; &nbsp; Category: {product?.category.name}
                 </Typography>
 
                 <Typography variant="subtitle1">
-                  Description: {product?.description}
+                <DescriptionIcon style={{color:'#3c568f'}} />  &nbsp; &nbsp;  Description: {product?.description}
                 </Typography>
 
                 <Typography variant="subtitle1">
-                  Price: {product?.price}
+                <Money style={{color:'#3c568f'}}/> &nbsp; &nbsp;  Price: {product?.price}
                 </Typography>
 
                 <Typography variant="subtitle1">
-                  Stock: {product?.stock}
+                <Filter7Icon style={{color:'#3c568f'}}/> &nbsp; &nbsp;  Stock: {product?.stock}
                 </Typography>
                 <Typography
                   
@@ -275,6 +286,23 @@ let rating;
                   onChange={ratingChanged}
                   value={5} size={24} activeColor="#ffd700" />
                 </Typography>
+              </div>
+              <div style={{marginLeft:50}}>
+
+              <Typography variant="subtitle1">
+                <PersonIcon style={{color:'#3c568f'}}/> &nbsp; &nbsp;  Seller: {product?.vendor?.name}
+                </Typography>
+
+                <Typography variant="subtitle1">
+                <EmailIcon style={{color:'#3c568f'}}/> &nbsp; &nbsp; Email: {product?.vendor?.email}
+                </Typography>
+
+                <Typography variant="subtitle1">
+                <LocalShippingIcon style={{color:'#3c568f'}}/> &nbsp; &nbsp;  Delivery: {product?.vendor?.cardExpire
+                  }
+                </Typography>
+
+                </div>
               </div>
 
               

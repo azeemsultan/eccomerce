@@ -1079,7 +1079,6 @@ console.log(collection);
     <TableHead>
       <TableRow>
         <TableCell>News Title</TableCell>
-        <TableCell align="right">Delete</TableCell>
         
       </TableRow>
     </TableHead>
@@ -1092,7 +1091,6 @@ console.log(collection);
           <TableCell component="th" scope="row">
             {row.title}
           </TableCell>
-          <TableCell align="right"><DeleteIcon onClick={()=>deleteUser(row._id)}/></TableCell>
         </TableRow>
       ))}
     </TableBody>
