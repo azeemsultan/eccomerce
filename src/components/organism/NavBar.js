@@ -102,9 +102,9 @@ export default function NavBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem  >
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
+          <Badge color="error">
             <MailIcon />
           </Badge>
         </IconButton>
@@ -164,8 +164,10 @@ export default function NavBar() {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
+              <Badge  color="error">
+                <MailIcon onClick={()=>{
+              window.location.href="/message"
+            }} />
               </Badge>
             </IconButton>
     

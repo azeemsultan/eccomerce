@@ -638,6 +638,17 @@ console.log(collection);
           </ListItem>
       
       </List>
+      <List onClick={()=>{
+        window.location.href="/vmessage"
+      }}>
+          <ListItem>
+            <ListItemIcon>
+              Messages
+            </ListItemIcon>
+            <ListItemText  />
+          </ListItem>
+      
+      </List>
     </div>
   );
 

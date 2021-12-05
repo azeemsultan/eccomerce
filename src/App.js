@@ -11,6 +11,9 @@ import VendorSignIn from './pages/VendorSignin';
 import ProductPage from './pages/ProductPage';
 import BlogPage from './pages/Blog';
 import UserPage from './pages/UserPage';
+import Message from './components/organism/Message';
+import VMessage from './components/organism/vMessage';
+
 
 
 function App() {
@@ -20,6 +23,8 @@ function App() {
       <BrowserRouter>
       
       <Route path="/blog" component={BlogPage}/>
+      <Route path="/message" component={Message}/>
+      <Route path="/vmessage" component={VMessage}/>
       <Route path="/products/" component={ProductPage}/>
         <Route path="/adminLogin" component={AdminSignIn}/>
         <Route path="/vendorLogin" component={VendorSignIn}/>

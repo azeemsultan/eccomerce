@@ -32,7 +32,7 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { flexbox } from "@mui/system";
-import { Money } from "@material-ui/icons";
+import { Message, Money } from "@material-ui/icons";
 
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -70,6 +70,7 @@ const ProductPage = () => {
   let [cartItem, setCartItem] = useState(cartItems);
 
   const [open, setOpen] = React.useState(false);
+  let [allChat,setAllChat] = useState([]);
   const [openOrder, setOpenOrder] = React.useState(false);
   const [openShipping, setOpenShipping] = React.useState(false);
   const [address,setAddress] = React.useState('');
@@ -177,6 +178,16 @@ let handleShipping = () => {
 };
 
 
+let allChats = () =>{
+  axios.get('http://localhost:5000/api/chats', {headers:{'Authorization':token}})
+  .then((response)=>{
+    setAllChat(response.data.data.filter(t=> userId._id === t.user._id));
+  })
+  .catch((error)=>{
+    console.log(error)
+  })
+}
+
 let proceedPayment = () => {
   let arr = {
     items: [
@@ -227,9 +238,37 @@ let rating;
     localStorage.setItem("cart", JSON.stringify(array));
     localStorage.setItem("cartItems", JSON.stringify(cartItem));
     getProduct();
+    allChats();
   }, [array, cartItem]);
 
-  console.log(product);
+  let messageNow = () =>{
+    let obj = {
+      user: userId._id,
+      vendor: product?.vendor?._id
+    }
+    console.log(userId._id)
+    let arr = allChat.filter(t=> product?.vendor?._id == t.vendor._id && userId._id == t.user._id)
+    if(arr.length > 0)
+    {
+      window.location.href=`/message/${arr[0]._id}`
+    }
+    else
+    {
+      axios.post('http://localhost:5000/api/chats',obj,{headers:{Authorization:token}})
+    .then((response)=>{
+      console.log(response.data);
+      window.location.href=`/message/${response.data.data._id}`
+
+    }).
+    catch((err)=>{
+      console.log(err)
+    })
+    
+    }
+   
+  }
+  console.log('guys agaya',product?.vendor?._id);
+  console.log(allChat)
   return (
     <Grid container>
       <Grid item md={12}>
@@ -300,6 +339,10 @@ let rating;
                 <Typography variant="subtitle1">
                 <LocalShippingIcon style={{color:'#3c568f'}}/> &nbsp; &nbsp;  Delivery: {product?.vendor?.cardExpire
                   }
+                </Typography>
+
+                <Typography variant="subtitle1">
+                <Message onClick={messageNow} style={{color:'#3c568f'}}/> &nbsp; &nbsp;  Message
                 </Typography>
 
                 </div>
