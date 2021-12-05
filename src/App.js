@@ -13,16 +13,19 @@ import BlogPage from './pages/Blog';
 import UserPage from './pages/UserPage';
 import Message from './components/organism/Message';
 import VMessage from './components/organism/vMessage';
+import Zapp from './components/organism/Stripe'
 
 
 
 function App() {
-  
+
+
   return (
     <div>
       <BrowserRouter>
       
       <Route path="/blog" component={BlogPage}/>
+      <Route path="/zapp" component={Zapp}/>
       <Route path="/message" component={Message}/>
       <Route path="/vmessage" component={VMessage}/>
       <Route path="/products/" component={ProductPage}/>

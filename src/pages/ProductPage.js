@@ -217,6 +217,31 @@ let proceedPayment = () => {
     });
     handleCloseOrder();
 };
+let proceedCard = () =>{
+  let arr = {
+    items: [
+      {
+        productId: id,
+        quantity: itemNo,
+      },
+    ],
+  };
+  axios
+    .post(
+      `http://localhost:5000/api/orders`,
+      { items: cartItem },
+      { headers: { Authorization: token } }
+    )
+    .then(function (response) {
+      window.location.href="/zapp"
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    handleCloseOrder();
+
+    
+}
 let rating;
 
   let getProduct = () => {
@@ -481,7 +506,7 @@ let rating;
                   <DialogContentText id="alert-dialog-slide-description">
                     <Button onClick={proceedPayment}>CASH</Button>
                     <br />
-                    <Button>CARD</Button>
+                    <Button onClick={proceedCard}>CARD</Button>
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
