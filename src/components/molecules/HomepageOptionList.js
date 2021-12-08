@@ -20,12 +20,24 @@ const HomePageList = () => {
             <Button>Wishlist</Button>
         </li>
         <li>
-            <Button>Services & Help</Button>
+            <Button onClick={()=>{
+                window.location.href = "/services"
+            }}>Services & Help</Button>
         </li>
         <li>
             <a style={{textDecoration:'none'}} href="/blog">
             <Button>Blogs</Button>
             </a>
+        </li>
+        <li>
+            <Button onClick={()=>{
+                window.location.href = "/category/discount"
+            }}>Deals and Promotions</Button>
+        </li>
+        <li>
+            <Button onClick={()=>{
+                window.location.href = "/category/exclusive_products"
+            }}>Exclusive Products</Button>
         </li>
   
     </ul>

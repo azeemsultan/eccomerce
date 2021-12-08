@@ -14,6 +14,7 @@ import UserPage from './pages/UserPage';
 import Message from './components/organism/Message';
 import VMessage from './components/organism/vMessage';
 import Zapp from './components/organism/Stripe'
+import Services from './pages/services'
 
 
 
@@ -25,6 +26,7 @@ function App() {
       <BrowserRouter>
       
       <Route path="/blog" component={BlogPage}/>
+      <Route path="/services" component={Services}/>
       <Route path="/zapp" component={Zapp}/>
       <Route path="/message" component={Message}/>
       <Route path="/vmessage" component={VMessage}/>

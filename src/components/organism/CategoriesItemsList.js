@@ -32,7 +32,19 @@ const CategoriesItems = () => {
     axios.get(`http://localhost:5000/api/products`,{headers: { Authorization: token }})
     .then(function (response) {
       console.log(response);
-      setProducts(response.data.data.filter(t=>t.category.name == link))
+      if(link == 'exclusive_products')
+      {
+        setProducts(response.data.data.filter(t=>t.category.name === 'Exclusive Products'))
+      }
+      else if(link == 'discount')
+      {
+        setProducts(response.data.data.filter(t=>t.category.name === 'Discounts'))
+      }
+      else
+      {
+        setProducts(response.data.data.filter(t=>t.category.name == link))
+      }
+    
     })
     .catch(function (error) {
       console.log(error);

@@ -13,7 +13,7 @@ const MiniBar = () => {
               <Link href="/login" style={{marginLeft:'30px'}}>
               Sign In/ Sign Up
               </Link>
-              <Link style={{marginLeft:'30px'}}>
+              <Link href="/services" style={{marginLeft:'30px'}}>
               Help & Contact
               </Link>
               <div style={{position:'absolute',right:50}}>

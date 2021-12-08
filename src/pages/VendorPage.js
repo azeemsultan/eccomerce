@@ -76,6 +76,7 @@ function VendorPage(props) {
   const [phone,setPhone] = React.useState('');
   const [email,setEmail] = React.useState('');
   const [delivery,setDelivery] = React.useState('');
+  let [vendorImage, setVendorImage] = React.useState();
 
 
   const handleVName=(e)=>{
@@ -124,6 +125,7 @@ function VendorPage(props) {
       setVName(response.data.data.name);
       setPhone(response.data.data.phoneNumber);
       setDelivery(response.data.data.cardExpire);
+      setVendorImage(response.data.data.appartment)
 
     })
     .catch(function (error) {
@@ -131,6 +133,7 @@ function VendorPage(props) {
     });
   }
 
+  console.log(vendorImage)
   let saveInfo = () =>{
     let obj = {
       name: vName,
@@ -508,6 +511,23 @@ console.log(collection);
   };
 
 
+  let savePicture = () =>{
+    console.log('saving image')
+    let obj = {
+      appartment: vendorImage[0]
+    }
+    axios.patch(`http://localhost:5000/api/vendors/${decode._id}`, obj, {headers:{'Authorization':vendorToken}})
+    .then(function (response) {
+     console.log('information updated');
+     window.location.href="/vendor"
+
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+
+  }
+
 
   let getSubCategories = () => {
     axios
@@ -572,7 +592,10 @@ console.log(collection);
   const drawer = (
     <div>
     <div style={{marginLeft:50,marginTop:50}}>
-    <Avatar style={{width:100, height:100}} />
+    <Avatar src={`https://fyptest.blob.core.windows.net/images/${vendorImage}`} style={{width:100, height:100}} />
+    <div style={{display:'flex',justifyContent:'start',marginTop:10,marginLeft:5}} >
+    {vName}
+</div>
     </div>
       <Toolbar />
       <Divider />
@@ -897,6 +920,25 @@ console.log(collection);
         >
           <Toolbar />
           <Grid container>
+          <Grid item md={6} xs={12}>
+        <div style={{marginTop:'50px',display:'flex',borderRadius:'9px',padding:10,border:'#44adbd'}}>
+        <img style={{margin:'0px auto',maxHeight:600,maxWidth:500,borderRadius:20}}
+         src={vendorImage === undefined || '' ? 'https://fyptest.blob.core.windows.net/images/photo-1524024973431-2ad916746881.jfif' : 
+         `https://fyptest.blob.core.windows.net/images/${vendorImage}`}/>
+        </div>
+            
+    <div style={{display:'flex'}}>
+      <div style={{margin:'0px auto'}}>
+      <FileUpload 
+        up={vendorImage}
+        setUp={setVendorImage}
+        temp={vendorImage}
+        savePicture={savePicture}
+       // success={success}
+      />
+      </div>
+ </div>
+        </Grid>
           <Grid item md={6} xs={12}>
         <div style={{marginTop:'60px',marginLeft:'30px',marginRight:'30px'}}>
         <div style={{ display: "flex", marginTop: 30 }}>

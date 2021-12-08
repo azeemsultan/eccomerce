@@ -118,6 +118,22 @@ function UserPage(props) {
     });
   }
 
+  let handleStatus = (e,id) =>{
+    let obj ={
+      status: e.target.value
+    }
+    axios.patch(`http://localhost:5000/api/orders/${id}`, obj, {headers:{'Authorization':token}})
+    .then(function (response) {
+      enqueueSnackbar('Order status updated successfully!', {
+        variant: 'success',
+        autoHideDuration: 2000
+      });
+      setTimeout(function() {
+        window.location.href = '/user';
+      }, 2000);
+     } )
+  }
+
 React.useEffect(() => {
  getUser();
  getOrders();
@@ -259,7 +275,8 @@ React.useEffect(() => {
 
         
         <TableCell style={{color:'white',fontWeight:'bold'}}>Bill</TableCell>
-     
+        <TableCell style={{color:'white',fontWeight:'bold'}}>Shipping Status</TableCell>
+
         
       </TableRow>
     </TableHead>
@@ -282,6 +299,13 @@ React.useEffect(() => {
             {row.amount}
           </TableCell>
     
+          <TableCell component="th" scope="row">
+            <select onChange={(e)=>handleStatus(e,row._id)} >
+              <option value={row?.status}>{row.status || 'Dispatched'} </option>
+              <option value="Delivered">Delivered</option>
+              <option value="Dispatched">Dispatched</option>
+            </select>
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>
