@@ -301,9 +301,8 @@ React.useEffect(() => {
     
           <TableCell component="th" scope="row">
             <select onChange={(e)=>handleStatus(e,row._id)} >
-              <option value={row?.status}>{row.status || 'Dispatched'} </option>
+              <option value={row?.status}>{row.status === "Unpaid" ? "Dispatched": row.status || 'Dispatched'} </option>
               <option value="Delivered">Delivered</option>
-              <option value="Dispatched">Dispatched</option>
             </select>
           </TableCell>
         </TableRow>

@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import { useSnackbar } from 'notistack';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -13,6 +14,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Divider } from '@mui/material';
 
 function Copyright(props) {
   return (
@@ -30,6 +32,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
+  const { enqueueSnackbar } = useSnackbar();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -45,7 +48,10 @@ export default function Login() {
       window.location.href = '/'
     })
     .catch(function (error) {
-      console.log(error);
+      enqueueSnackbar('Incorrect Email/Password!', {
+        variant: 'error',
+        autoHideDuration: 2000
+      });
     });
   
     
@@ -61,7 +67,7 @@ export default function Login() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundImage: 'url(https://source.unsplash.com/ZmgJiztRHXE)',
             backgroundRepeat: 'no-repeat',
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -79,11 +85,18 @@ export default function Login() {
               alignItems: 'center',
             }}
           >
+            <Typography component="h1" variant="h3">
+              Shopify
+            </Typography>
+            <Divider/>
+            <br/>
+
+
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              User Sign in
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField

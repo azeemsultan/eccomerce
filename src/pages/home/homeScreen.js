@@ -48,13 +48,16 @@ const HomeScreen = () => {
     <Grid container>
        {homeBool && ( 
          <>
+
       <Grid container>
       <Grid item md={12}>
         <MiniBar />
       </Grid>
+
       <Grid item md={12} xs={12} sm={12}>
       <NavBar />
       </Grid>
+
     {  /*  Categories Buttons   */}
       <Grid item md={1}></Grid>
 
@@ -71,7 +74,7 @@ const HomeScreen = () => {
       <Grid item md={1}></Grid>
 
       <Grid item md={7}>
-       <div style={{marginRight:20}}>
+       <div style={{marginRight:20,marginTop:15}}>
        <DemoCarousel
 />
        </div>
@@ -92,22 +95,27 @@ const HomeScreen = () => {
       <Grid item md={1}></Grid>
   {    /*Customized Product Section */}
 
-
-
-
 <Grid container>
 <Grid item md={1}></Grid>
 
 <Grid item md={10}>
  <CustomizedProduct/>
 </Grid>
+
+<Grid item md={1}></Grid>
 </Grid>
 
 {/* Categories List Items */}
-
- <Grid item md={11  }>
+<Grid item md={12}>
+<Grid container style={{backgroundColor:'#f2f2f2'}}>
+  <Grid item md={1} lg={1} sm={1} xs={1}></Grid>
+<Grid item lg={10} md={10} sm={12} xs={12}>
   <HomeListItems />
  </Grid>
+ <Grid item  md={1} lg={1} sm={1} xs={1}></Grid>
+</Grid>
+</Grid>
+
 
  </Grid>
 </>

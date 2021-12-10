@@ -14,29 +14,29 @@ const CustomizedProduct = () => {
   let getProducts = () =>{
     axios.get('http://localhost:5000/api/products', {headers:{'Authorization':token}})
     .then(function (response) {
-      if(response.data.data.length > 8)
-      {
-        for(let i=0 ; i< response.data.data.length-8   ; ++i)
-        {
-          response.data.data.pop();
-        }
-   
-      }
-      setProducts(response.data.data);
-   
-     var result = response.data.data.filter(function(event) {
-      return  event.productCollection.name == 'Top Rated'; 
-  });
-
-  console.log(result);
-
-      setTopRated(response.data.data.filter(product=> product.productCollection.name === 'Top Rated'))
+      let arr = response.data.data.filter(t=> t.category.name == `Men's Wear`);
+      let brr = response.data.data.filter(t=> t.category.name == `Women's Wear`);
+      let crr = response.data.data.filter(t=> t.category.name == `Discounts`);
+      let drr = response.data.data.filter(t=> t.category.name == `Exclusive Products`);
+      let err = response.data.data.filter(t=> t.category.name == `Electronics`);
+      let frr = response.data.data.filter(t=> t.category.name == `Deals`);
+      let final = [];
+      final.push(arr[0]);
+      final.push(brr[0]);
+      final.push(crr[0]);
+      final.push(drr[0]);
+      final.push(err[0]);
+      final.push(frr[0]);
+      console.log(final)
+      setProducts(final);
     })
     .catch(function (error) {
       console.log(error);
     });
 
   }
+
+ 
   React.useEffect(()=>{
     getProducts();
  
@@ -62,13 +62,21 @@ const CustomizedProduct = () => {
         Partner with one of 60,000 experienced manufacturers with design & production capabilities and on-time delivery.
         </Typography>
    
-    <div style={{display:'flex', marginTop: "20px", marginBottom: "20px" }}>
-      {products.map(function (item, i) {
-        return (
-          <div  onClick={()=>redirectToCategory(item?.category?.name)}  style={{ marginTop: "10px",marginLeft:'5px' }}>
-            <SimpleCard type={item?.category?.name || ''} image={`https://fyptest.blob.core.windows.net/images/${item.images[0]}`} />
-          </div>
-        );
+    <div style={{display:'flex', marginTop: "20px", marginBottom: "20px"}}>
+      {products?.map(function (item, i) {
+        if(item?.images[0] === undefined)
+        {
+          <div> </div>
+        }
+        else
+        {
+          return (
+            <div  onClick={()=>redirectToCategory(item?.category?.name)}  style={{ marginLeft: i==1 ? '0px':'40px', marginTop: "10px"}}>
+              <SimpleCard type={item?.category?.name || ''} image={`https://fyptest.blob.core.windows.net/images/${item?.images[0]}`} />
+            </div>
+          );
+        }
+       {console.log(i)}
       })}
     </div>
 

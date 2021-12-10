@@ -31,54 +31,26 @@ const HomeListItems = () => {
     getProducts();
   },[])
 
-  console.log(prod)
+  console.log(prod,'this is product')
 
-
-  let array = [
-    {
-      type: "Chines Machinery Branch",
-      price: 34,
-      image:
-        "https://assets.it22.nl/vlog-make-laars/admin/DummyHouseReviewPlaceholderImage.png",
-    },
-    {
-      type: "Chines Machinery Branch",
-      price: 34,
-      image:
-        "https://assets.it22.nl/vlog-make-laars/admin/DummyHouseReviewPlaceholderImage.png",
-    },
-    {
-      type: "Chines Machinery Branch",
-      price: 34,
-      image:
-        "https://assets.it22.nl/vlog-make-laars/admin/DummyHouseReviewPlaceholderImage.png",
-    },
-    {
-      type: "Chines Machinery Branch",
-      price: 34,
-      image:
-        "https://assets.it22.nl/vlog-make-laars/admin/DummyHouseReviewPlaceholderImage.png",
-    },
-  ];
   return (
     <Grid container>
     <Grid item md={12}>
         <br/>
     </Grid>
-    <Grid item md={1}>
-
-    </Grid>
-    <Grid item md={10}>
-      <Grid container spacing={3}>
+    <Grid item md={12} xs={12} sm={12}>
+      <Grid container>
       {prod.map(function (item, i) {
         return (
-          <Grid item md={3} style={{ marginLeft: "10px" }}>
+          <Grid item lg={4} md={6} sm={6} xs={12} style={{ marginTop: "20px" }}>
             <DetailCard
               type={item.name}
               image={`https://fyptest.blob.core.windows.net/images/${item.images[0]}`}
               price={item.price}
               desc={item.description}
               id={item._id}
+              img={`https://fyptest.blob.core.windows.net/images/${item.vendor.appartment}`}
+              rate={item.ratings.value}
              
 
             />
@@ -86,48 +58,11 @@ const HomeListItems = () => {
         );
       })}
       </Grid>
-      <Grid item md={1}>
 
-</Grid>
       </Grid>
       <Grid item md={12}>
         <br />
       </Grid>
-     {/* <Grid item md={3} style={{ marginRight: 15 }}>
-        <Typography variant="h5">Packages and Printing</Typography>
-        <br />
-        <SimpleCard type="Chines Machinery branch chines" />
-    </Grid> */}
-      {/*array.map(function (item, i) {
-        return (
-          <Grid item md={2} style={{ marginLeft: "10px" }}>
-            <DetailCard
-              type={item.type}
-              image={item.image}
-              price={item.price}
-            />
-          </Grid>
-        );
-      })}
-      <Grid item md={12}>
-        <br />
-      </Grid>
-      <Grid item md={3} style={{ marginRight: 15 }}>
-        <Typography variant="h5">Electronics</Typography>
-        <br />
-        <SimpleCard type="Chines Machinery branch chines" />
-      </Grid>
-      {array.map(function (item, i) {
-        return (
-          <Grid item md={2} style={{ marginLeft: "10px" }}>
-            <DetailCard
-              type={item.type}
-              image={item.image}
-              price={item.price}
-            />
-          </Grid>
-        );
-      })*/}
     </Grid>
   );
 };

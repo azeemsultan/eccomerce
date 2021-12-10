@@ -75,16 +75,26 @@ function VendorPage(props) {
   const [vName,setVName] = React.useState('');
   const [phone,setPhone] = React.useState('');
   const [email,setEmail] = React.useState('');
+  const [collectionError,setCollectionError] = React.useState();
+  const [categoryError,setCategoryError] = React.useState();
+  const [productError,setProductError] = React.useState();
+  const [subCategoryError,setSubCategoryError] = React.useState();
+  const [descriptionError,setDescriptionError] = React.useState();
+  const [priceError,setPriceError] = React.useState();
+  const [stockError,setStockError] = React.useState();
+  const [imageError,setImageError] = React.useState();
+
+
   const [delivery,setDelivery] = React.useState('');
   let [vendorImage, setVendorImage] = React.useState();
 
 
   const handleVName=(e)=>{
-    setVName(e.target.value);
+    setVName(e.target.value.replace(/[0-9]/g, ''));
   }
 
   const handlePhone=(e)=>{
-    setPhone(e.target.value);
+    setPhone(e.target.value.replace);
   }
 
 
@@ -107,6 +117,14 @@ function VendorPage(props) {
 
   let uploadImage = (e) => {
     console.log(e.target.files);
+    if(e.target.files)
+    {
+      setImageError(false)
+    }
+    else
+    {
+      setImageError(true)
+    }
   }
 
 
@@ -270,6 +288,16 @@ let handleOrders = () => {
 
   const handleChangeName = (event) => {
     setName(event.target.value);
+
+    if(name.length > 5)
+    {
+      setProductError(false);
+    }
+    else
+    {
+      setProductError(true);
+    }
+
   };
 
   const handleChangeShortDescription = (event) => {
@@ -278,14 +306,35 @@ let handleOrders = () => {
 
   const handleChangeDescription = (event) => {
     setDescription(event.target.value);
+    
   };
 
   const handleChangeStock = (event) => {
     setStock(event.target.value);
+    
+    if(stock.length > 0)
+    {
+      setStockError(false);
+    }
+    else
+    {
+      setStockError(true);
+    }
+
   };
 
   const handleChangePrice = (event) => {
     setPrice(event.target.value);
+    
+    if(price.length > 0)
+    {
+      setPriceError(false);
+    }
+    else
+    {
+      setPriceError(true);
+    }
+
   };
 
   console.log(window.location)
@@ -362,6 +411,9 @@ let handleOrders = () => {
   }
   
   let handleSubmit = (event) =>{
+
+    if( name && description && price && stock && img && subCategory && category && cate && productError )
+    {
       console.log('submitted');
       let object = {
           name: name,
@@ -402,6 +454,15 @@ let handleOrders = () => {
       .catch(function (error) {
         console.log(error);
       });
+    }
+    else
+    {
+      enqueueSnackbar('Fill Mandatory Fields!', {
+        variant: 'danger',
+        autoHideDuration: 2000
+      });
+    }
+     
       event.preventDefault();
 
   }
@@ -476,6 +537,23 @@ let handleOrders = () => {
         console.log(error);
       });
   };
+
+
+  let handleStatus = (e,id) =>{
+    let obj ={
+      status: e.target.value
+    }
+    axios.patch(`http://localhost:5000/api/orders/${id}`, obj, {headers:{'Authorization':vendorToken}})
+    .then(function (response) {
+      enqueueSnackbar('Order status updated successfully!', {
+        variant: 'success',
+        autoHideDuration: 2000
+      });
+      setTimeout(function() {
+        window.location.href = '/vendor';
+      }, 2000);
+     } )
+  }
 
 console.log(collection);
   let getCategories = () => {
@@ -559,6 +637,8 @@ console.log(collection);
 
 
   let submitNews =()=>{
+    if(news && newsDescription && newsCover)
+    {
     let obj ={
       title: news,
       description: newsDescription,
@@ -583,9 +663,19 @@ console.log(collection);
 
     })
     .catch(function (error) {
-      console.log(error);
+      enqueueSnackbar(error, {
+        variant: 'error',
+        autoHideDuration: 2000
+      });
     });
-
+  }
+    else
+    {
+      enqueueSnackbar('Fill Mandatory Fields!', {
+        variant: 'error',
+        autoHideDuration: 2000
+      });
+    }
   }
 
  console.log(editProduct)
@@ -757,46 +847,7 @@ console.log(collection);
         <Typography paragraph>Add a Product</Typography>
         <br />
         <div style={{ display: "flex" }}>
-          <FormControl fullWidth>
-            <InputLabel id="Collection">Collection</InputLabel>
-            <Select
-              labelId="Collection"
-              id="Collection"
-              value={cate}
-              label="Collection"
-              onChange={handleChange}
-            >
-              {collection.map(function (item, i) {
-                return (
-                  <MenuItem key={i} value={item._id}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </div>
-
-        <div style={{ display: "flex", marginTop: 20 }}>
       
-        <FormControl fullWidth >
-            <InputLabel id="Category">Category</InputLabel>
-            <Select
-              labelId="Category"
-              id="Category"
-              value={category}
-              label="Category"
-              onChange={handleChangeCategory}
-            >
-              {categories.map(function (item, i) {
-                return (
-                  <MenuItem key={i} value={item._id}>
-                    {item.name}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
 
 
         { /* <FormControl fullWidth>
@@ -822,6 +873,50 @@ console.log(collection);
         </div>
         
         <form onSubmit={handleSubmit}>
+          
+        <FormControl fullWidth>
+            <InputLabel id="Collection">Collection</InputLabel>
+            <Select
+              labelId="Collection"
+              id="Collection"
+              value={cate}
+              label="Collection"
+              onChange={handleChange}
+              required={true}
+            >
+              {collection.map(function (item, i) {
+                return (
+                  <MenuItem key={i} value={item._id}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+     
+
+        <div style={{ display: "flex", marginTop: 20 }}>
+      
+        <FormControl fullWidth >
+            <InputLabel id="Category">Category</InputLabel>
+            <Select
+              labelId="Category"
+              id="Category"
+              value={category}
+              required={true}
+              label="Category"
+              onChange={handleChangeCategory}
+            >
+              {categories.map(function (item, i) {
+                return (
+                  <MenuItem key={i} value={item._id}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
+          </div>
 
         <div style={{ display: "flex", marginTop: 20 }}>
           <TextField
@@ -829,6 +924,7 @@ console.log(collection);
             name="Name"
             id="Name"
             label="Product Name"
+            required={true}
             value={name}
             onChange={handleChangeName}
             style={{ marginRight: "10px" }}
@@ -840,6 +936,7 @@ console.log(collection);
               labelId="subCategory"
               id="subCategory"
               value={subCategory}
+              required={true}
               label="subCategory"
               onChange={handleChangeSubCategory}
             >
@@ -853,24 +950,29 @@ console.log(collection);
             </Select>
           </FormControl>
         </div>
+        {productError ? <div style={{color:'red'}}> Product name too short </div>: <div> </div>}
         <div style={{ display: "flex", marginTop: 20 }}>
           <TextField
             fullWidth
             name="Description"
             id="Description"
             label="Product Description"
+            required={true}
             value={description}
             onChange={handleChangeDescription}
           />
         </div>
+      
         <div style={{ display: "flex", marginTop: 20 }}>
           <TextField
             fullWidth
             name="Price"
             id="Price"
-            label="Product Price ($)"
+            label="Product Price (PKR)"
             style={{ marginRight: "10px" }}
+            type="number"
             value={price}
+            required={true}
             onChange={handleChangePrice}
           />
 
@@ -878,11 +980,15 @@ console.log(collection);
             fullWidth
             name="Collection"
             id="Collection"
+            type="number"
             label="Product Stock"
             value={stock}
+            required={true}
             onChange={handleChangeStock}
           />
         </div>
+        {priceError ? <div style={{color:'red',width:'50%'}}>Enter Price </div>: <div></div>}
+        {stockError ? <div style={{color:'red',width:'50%'}}>Enter Stock </div>: <div></div>}
         <div style={{ display: "flex", marginTop: 20 }}>
     
                         <div>
@@ -941,6 +1047,7 @@ console.log(collection);
         </Grid>
           <Grid item md={6} xs={12}>
         <div style={{marginTop:'60px',marginLeft:'30px',marginRight:'30px'}}>
+          <form onSubmit={saveInfo}>
         <div style={{ display: "flex", marginTop: 30 }}>
         <TextField
             style={{cursor:'not-allowed !important'}}
@@ -958,6 +1065,7 @@ console.log(collection);
             name="Name"
             id="Name"
             label="Name"
+            required={true}
             value={vName}
             onChange={handleVName}
           />
@@ -965,9 +1073,11 @@ console.log(collection);
         <div style={{ display: "flex", marginTop: 30 }}>
         <TextField
             fullWidth
-            name="phone"
+            name="phone"  
+            required={true }
             id="phone"
             label="phone"
+            type="number"
             value={phone}
             onChange={handlePhone}
           />
@@ -983,8 +1093,9 @@ console.log(collection);
           />
         </div>
         <div style={{ display: "flex", marginTop: 30 }}>
-        <Button onClick={saveInfo} style={{backgroundColor:'#44adbd',color:'white',width:'100px'}} >Save</Button>
+        <Button type="submit" style={{backgroundColor:'#44adbd',color:'white',width:'100px'}} >Save</Button>
         </div>
+        </form>
         </div>
         </Grid>
           </Grid>
@@ -1079,6 +1190,7 @@ console.log(collection);
      <Toolbar />
      <TableContainer component={Paper}>
        <div style={{margin:20}}>
+       <form onSubmit={submitNews}>
      <div style={{ display: "flex", marginTop: 20 }}>
           <TextField
             fullWidth
@@ -1086,9 +1198,12 @@ console.log(collection);
             id="News"
             label="News Title"
             value={news}
+            required={true}
             onChange={handleChangeNews}
             
+            
           />
+          
         </div>
         <div style={{ display: "flex", marginTop: 20 }}>
         <TextField
@@ -1097,9 +1212,12 @@ console.log(collection);
             id="newsDescription"
             label="News Description"
             value={newsDescription}
+            required={true}
             onChange={handleChangeNewsDescription}
+
           />
         </div>
+   
         <div style={{ display: "flex", marginTop: 20 }}>
     
     <div>
@@ -1111,8 +1229,10 @@ console.log(collection);
       />
  </div>
 </div>
-<Button variant="outlined"  style={{marginTop:10}} onClick={submitNews}>Add News</Button>
+<Button variant="outlined"  style={{marginTop:10}} type="submit">Add News</Button>
+</form>
 </div>
+
 </TableContainer>
     </Box>
         )}
@@ -1174,6 +1294,7 @@ console.log(collection);
 
         
         <TableCell>Bill</TableCell>
+        <TableCell>Delivery</TableCell>
      
         
       </TableRow>
@@ -1196,7 +1317,12 @@ console.log(collection);
           <TableCell component="th" scope="row">
             {row.amount}
           </TableCell>
-    
+          <TableCell component="th" scope="row">
+            <select onChange={(e)=>handleStatus(e,row._id)} >
+              <option value={row?.status}>{row.status == "Unpaid" ? "Dispatched": row.status || 'Dispatched'} </option>
+              <option value="Delivered">Delivered</option>
+            </select>
+          </TableCell>
         </TableRow>
       ))}
     </TableBody>

@@ -54,7 +54,7 @@ let Message = () => {
     .catch((error)=>{
       console.log(error)
     })
-  },1000)
+  },5000)
 
   }
 

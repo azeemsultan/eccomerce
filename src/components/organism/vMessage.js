@@ -38,8 +38,8 @@ let VMessage = () => {
   }
 
   let getChat = (id) =>{
-    setInterval(()=>{
-        let tid = id;
+    let tid = id;
+    var myVar = setInterval(()=>{
         console.log('clicked')
         setChatId(id);
         axios.get('http://localhost:5000/api/chats', {headers:{'Authorization':token}})
@@ -50,8 +50,8 @@ let VMessage = () => {
         .catch((error)=>{
           console.log(error)
         })
-    },1000)
-   
+    },5000)
+
   }
 
 

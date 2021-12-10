@@ -7,8 +7,8 @@ const SideList = () => {
   let token = localStorage.getItem('token');
   const [products,setProducts] = React.useState([]);
   const [topRated,setTopRated] = React.useState([]);
-
- 
+  const [product, setProduct] = React.useState([])
+  let productTwo = []
   let getProducts = () =>{
     axios.get('http://localhost:5000/api/products', {headers:{'Authorization':token}})
     .then(function (response) {
@@ -17,16 +17,22 @@ const SideList = () => {
         for(let i=0 ; i< response.data.data.length-3  ; ++i)
         {
           response.data.data.pop();
+         
         }
-   
+
+        productTwo[0] = response.data.data[0];
+        productTwo[1] = response.data.data[1];
+        setProduct(...product,productTwo)
       }
       setProducts(response.data.data);
    
      var result = response.data.data.filter(function(event) {
       return  event.productCollection.name == 'Top Rated'; 
+
   });
 
   console.log(result);
+  console.log(productTwo);
 
       setTopRated(response.data.data.filter(product=> product.productCollection.name === 'Top Rated'))
     })
@@ -66,7 +72,7 @@ const SideList = () => {
   ];*/
   return (
     <div style={{ marginTop: "20px", marginBottom: "20px" }}>
-      {arr.map(function (item, i) {
+      {product.map(function (item, i) {
         return (
           <div key={i} style={{ marginTop: "10px" }}>
          <SimpleCard type={item?.category?.name || ''} image={`https://fyptest.blob.core.windows.net/images/${item.images[0]}`} />
