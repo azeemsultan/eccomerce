@@ -412,7 +412,7 @@ let handleOrders = () => {
   
   let handleSubmit = (event) =>{
 
-    if( name && description && price && stock && img && subCategory && category && cate && productError )
+    if( name && description )
     {
       console.log('submitted');
       let object = {
