@@ -298,7 +298,7 @@ let Cart = () =>{
                       value={address}
                       onChange={handleAddress}
                     />
-
+      {address !== "" ? <div></div>: <div style={{color:'red'}}>Please enter the address</div> }
                     <TextField
                       style={{ marginTop: 20 }}
                       required={TryOutlined}
@@ -307,7 +307,7 @@ let Cart = () =>{
                       value={city}
                       onChange={handleCity}
                     />
-
+      {city !== "" ? <div></div>: <div style={{color:'red'}}>Please enter the city</div> }
                     <TextField
                       style={{ marginTop: 20}}
                       required={true}
@@ -316,12 +316,12 @@ let Cart = () =>{
                       value={province}
                       onChange={handleProvince}
                     />
-                    {province ? <div></div>: <div style={{color:'red'}}>Please enter the province</div> }
+                    {province !== "" ? <div></div>: <div style={{color:'red'}}>Please enter the province</div> }
                     <br/>
                     <br/>
                     <Divider />
                     <div style={{marginTop:40}}>
-
+{console.log(address,'address')}
                     </div>
                     <Paper elevation={3}>
                         <br/>
@@ -331,9 +331,9 @@ let Cart = () =>{
                     <Divider />
                     <br/>
                     <div style={{width:'100%',}}>
-                    <Button disabled={city.length > 0 && province.length > 0 && address.length > 0  && array.length == 0 ? true: false} variant="outlined" style={{margin:'0px auto',display:'flex'}} onClick={proceedPayment}>CASH ON DELIVERY</Button>
+                    <Button disabled={address === "" || city === "" || province === "" || array.length == 0 ? true: false} variant="outlined" style={{margin:'0px auto',display:'flex'}} onClick={proceedPayment}>CASH ON DELIVERY</Button>
                     <br />
-                    <Button disabled={city && province && address && array.length == 0 ? true: false} variant="outlined" style={{margin:'0px auto',display:'flex'}} onClick={proceedCard}>PAYMENT THROUGH CARD</Button>
+                    <Button disabled={address === "" || city === "" || province === "" ||  array.length == 0 ? true: false} variant="outlined" style={{margin:'0px auto',display:'flex'}} onClick={proceedCard}>PAYMENT THROUGH CARD</Button>
                     </div>
                     <br/>
                     <br/>

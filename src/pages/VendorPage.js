@@ -79,12 +79,15 @@ function VendorPage(props) {
   const [categoryError,setCategoryError] = React.useState();
   const [productError,setProductError] = React.useState();
   const [subCategoryError,setSubCategoryError] = React.useState();
+  const [phoneError, setPhoneError] = React.useState();
   const [descriptionError,setDescriptionError] = React.useState();
   const [priceError,setPriceError] = React.useState();
   const [stockError,setStockError] = React.useState();
   const [imageError,setImageError] = React.useState();
+  const [btnBool, setBtnBool] = React.useState(false);
 
 
+  let mobregex = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
   const [delivery,setDelivery] = React.useState('');
   let [vendorImage, setVendorImage] = React.useState();
 
@@ -94,7 +97,17 @@ function VendorPage(props) {
   }
 
   const handlePhone=(e)=>{
-    setPhone(e.target.value.replace);
+    if(mobregex.test(e.target.value))
+    {
+      console.log('your email is vaid')
+      setPhoneError(true);
+    }
+    else
+    {
+      console.log('your email is invaid')
+      setPhoneError(false);
+    }
+    setPhone(e.target.value);
   }
 
 
@@ -152,7 +165,9 @@ function VendorPage(props) {
   }
 
   console.log(vendorImage)
-  let saveInfo = () =>{
+  let saveInfo = (e) =>{
+    if(phoneError)
+    {
     let obj = {
       name: vName,
       phoneNumber: phone,
@@ -172,7 +187,15 @@ function VendorPage(props) {
     .catch(function (error) {
       console.log(error);
     });
-
+  }
+  else
+  {
+    enqueueSnackbar('Mobile number is incorrect!', {
+      variant: 'error',
+      autoHideDuration: 2000
+    });
+  }
+e.preventDefault();
   }
 
 
@@ -995,6 +1018,7 @@ console.log(collection);
                           <FileUpload
                             onChange={uploadImage}
                             file={image}
+                            setBtn={setBtnBool}
                             up={img}
                             setUp={setImg}
                             temp={image}
@@ -1007,7 +1031,7 @@ console.log(collection);
       
 
         <div style={{marginTop:30}}>
-        <Button type="submit"> ADD PRODUCT </Button>
+        <Button disabled={btnBool} type="submit"> ADD PRODUCT </Button>
         </div>
 
         </form>
@@ -1073,7 +1097,7 @@ console.log(collection);
         <div style={{ display: "flex", marginTop: 30 }}>
         <TextField
             fullWidth
-            name="phone"  
+            name="Mobile"  
             required={true }
             id="phone"
             label="phone"
@@ -1082,6 +1106,7 @@ console.log(collection);
             onChange={handlePhone}
           />
         </div>
+        {phoneError == false ? <div style={{color:'red',marginTop:10}}>Incorrect Mobile Number.</div>:<div></div>}
         <div style={{ display: "flex", marginTop: 30 }}>
         <TextField
             fullWidth

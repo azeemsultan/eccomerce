@@ -32,6 +32,7 @@ const FileUpload = (props) => {
   const onFileUpload = async () => {
     // prepare UI
     setUploading(true);
+    props.setBtn(true);
     
     // *** UPLOAD TO AZURE STORAGE ***
     for(let i=0 ; i<props?.up?.length; ++i)
@@ -45,6 +46,7 @@ const FileUpload = (props) => {
     // reset state/form
     setFileSelected(null);
     setUploading(false);
+    props.setBtn(false);
     setInputKey(Math.random().toString(36));
     if(props.savePicture)
     {

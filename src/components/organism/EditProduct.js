@@ -1,34 +1,13 @@
 import React, { useEffect } from 'react';
 import PropTypes from "prop-types";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import Drawer from "@mui/material/Drawer";
-import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import DeleteIcon from '@mui/icons-material/Delete';
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
-import MenuIcon from "@mui/icons-material/Menu";
+import FileUpload from "../organism/fileUpload";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { TextField, Button, Avatar } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Table from '@mui/material/Table';
-import EditIcon from '@mui/icons-material/Edit';
 
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Select from "@mui/material/Select";
 import axios from "axios";
 import { useSnackbar } from 'notistack';
@@ -47,12 +26,16 @@ const EditProduct = (props) => {
     const [shortDescription , setShortDescription] = React.useState('');
     const [collection, setCollection] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
+    const [image,setImage] = React.useState();
+    const [img,setImg] = React.useState();
     const [description , setDescription] = React.useState('');
     const { enqueueSnackbar } = useSnackbar();
     const [stock , setStock] = React.useState('');
+    const [imageError,setImageError] = React.useState();
     const [price , setPrice] = React.useState('');
     const [open, setOpen] = React.useState(props.open);
     const [cate, setCate] = React.useState("");
+    const [btnBool,setBtnBool] = React.useState(false);
 
     let token = localStorage.getItem('token')
 
@@ -68,6 +51,20 @@ const EditProduct = (props) => {
         setName(event.target.value);
       };
     
+
+      let uploadImage = (e) => {
+        console.log(e.target.files);
+        if(e.target.files)
+        {
+          setImageError(false)
+        }
+        else
+        {
+          setImageError(true)
+        }
+      }
+
+
       const handleChangeShortDescription = (event) => {
         setShortDescription(event.target.value);
       };
@@ -127,6 +124,7 @@ console.log(props.id)
       };
     */
 
+      console.log(cate.id);
       const handleClose = () => {
         props.setOpen(false);
       };
@@ -145,7 +143,7 @@ console.log(props.id)
             subCategory:'123123213131',
             cover: 'Image cover',
             specs: ['empty','empty'],
-            images: './images'
+            images: img[0]
   
    
         }
@@ -196,7 +194,7 @@ console.log(props.id)
             <Select
               labelId="Collection"
               id="Collection"
-              value={cate}
+              value={cate.value}
               label="Collection"
               onChange={handleChange}
               key={Math.random() * (1000 - 9 + 1)}
@@ -219,7 +217,7 @@ console.log(props.id)
             <Select
               labelId="Category"
               id="Category"
-              value={category}
+              value={category.value}
               label="Category"
               onChange={handleChangeCategory}
             >
@@ -309,7 +307,17 @@ console.log(props.id)
           />
         </div>
         <div style={{ display: "flex", marginTop: 20 }}>
-          <div> IMG </div>
+        <div>
+                          <FileUpload
+                            onChange={uploadImage}
+                            file={image}
+                            setBtn={setBtnBool}
+                            up={img}
+                            setUp={setImg}
+                            temp={image}
+                           // success={success}
+                          />
+                     </div>
 
         </div>
 
