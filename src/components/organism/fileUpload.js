@@ -7,6 +7,10 @@ const storageConfigured = isStorageConfigured();
 
 const FileUpload = (props) => {
   // all blobs in container
+  let {setUpBtn} = props;
+
+  console.log('this iseteup',props)
+  
   const [blobList, setBlobList] = useState([]);
 
   // current file to upload into container
@@ -32,7 +36,8 @@ const FileUpload = (props) => {
   const onFileUpload = async () => {
     // prepare UI
     setUploading(true);
-    props.setBtn(true);
+    setUpBtn(true);
+    
     
     // *** UPLOAD TO AZURE STORAGE ***
     for(let i=0 ; i<props?.up?.length; ++i)
@@ -46,7 +51,7 @@ const FileUpload = (props) => {
     // reset state/form
     setFileSelected(null);
     setUploading(false);
-    props.setBtn(false);
+    setUpBtn(false);
     setInputKey(Math.random().toString(36));
     if(props.savePicture)
     {

@@ -55,17 +55,36 @@ export default function VendorSignIn() {
 
       
   return (
+
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
+      <Grid container>
+      <CssBaseline />
+      <Grid item md={12}
+      xs={{
+        backgroundImage: 'url(https://source.unsplash.com/ZmgJiztRHXE)',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: (t) =>
+          t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center'
+      }}>
+      <Container
+      
+      component="main" maxWidth="xs">
+     
         <Box
           sx={{
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+ 
           }}
+     
         >
+           <Typography component="h1" variant="h5">
+              Vendor Sign in
+            </Typography>
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <LockOutlinedIcon />
           </Avatar>
@@ -107,9 +126,7 @@ export default function VendorSignIn() {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
+         
               </Grid>
               <Grid item>
                 <Link href="#" variant="body2">
@@ -121,6 +138,8 @@ export default function VendorSignIn() {
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+      </Grid>
+      </Grid>
     </ThemeProvider>
   );
 }

@@ -84,7 +84,7 @@ function VendorPage(props) {
   const [priceError,setPriceError] = React.useState();
   const [stockError,setStockError] = React.useState();
   const [imageError,setImageError] = React.useState();
-  const [btnBool, setBtnBool] = React.useState(false);
+  let [btnBool, setBtnBool] = React.useState();
 
 
   let mobregex = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
@@ -312,15 +312,6 @@ let handleOrders = () => {
   const handleChangeName = (event) => {
     setName(event.target.value);
 
-    if(name.length > 5)
-    {
-      setProductError(false);
-    }
-    else
-    {
-      setProductError(true);
-    }
-
   };
 
   const handleChangeShortDescription = (event) => {
@@ -335,28 +326,12 @@ let handleOrders = () => {
   const handleChangeStock = (event) => {
     setStock(event.target.value);
     
-    if(stock.length > 0)
-    {
-      setStockError(false);
-    }
-    else
-    {
-      setStockError(true);
-    }
 
   };
 
   const handleChangePrice = (event) => {
     setPrice(event.target.value);
     
-    if(price.length > 0)
-    {
-      setPriceError(false);
-    }
-    else
-    {
-      setPriceError(true);
-    }
 
   };
 
@@ -973,7 +948,7 @@ console.log(collection);
             </Select>
           </FormControl>
         </div>
-        {productError ? <div style={{color:'red'}}> Product name too short </div>: <div> </div>}
+
         <div style={{ display: "flex", marginTop: 20 }}>
           <TextField
             fullWidth
@@ -1010,15 +985,15 @@ console.log(collection);
             onChange={handleChangeStock}
           />
         </div>
-        {priceError ? <div style={{color:'red',width:'50%'}}>Enter Price </div>: <div></div>}
-        {stockError ? <div style={{color:'red',width:'50%'}}>Enter Stock </div>: <div></div>}
+    
         <div style={{ display: "flex", marginTop: 20 }}>
     
                         <div>
                           <FileUpload
                             onChange={uploadImage}
                             file={image}
-                            setBtn={setBtnBool}
+                            btn={btnBool}
+                            setUpBtn={setBtnBool}
                             up={img}
                             setUp={setImg}
                             temp={image}
@@ -1061,6 +1036,7 @@ console.log(collection);
       <div style={{margin:'0px auto'}}>
       <FileUpload 
         up={vendorImage}
+        setUpBtn={setBtnBool}
         setUp={setVendorImage}
         temp={vendorImage}
         savePicture={savePicture}
@@ -1248,6 +1224,7 @@ console.log(collection);
     <div>
       <FileUpload
         up={newsCover}
+        setUpBtn={setBtnBool}
         setUp={setNewsCover}
         temp={newsCover}
        // success={success}

@@ -35,6 +35,7 @@ import axios from "axios";
 import EditProduct from "../components/organism/EditProduct";
 import FilesDropzone from "../components/organism/filesDropZone";
 import FileUpload from "../components/organism/fileUpload";
+import jwtDecode from 'jwt-decode'
 
 const drawerWidth = 240;
 
@@ -47,6 +48,7 @@ function AdminPage(props) {
   const [users,setUsers] = React.useState([]);
   const [subCategories, setSubCategories] = React.useState([]);
 
+  let admintoken = localStorage.getItem('admintoken');
   const [category, setCategory] = React.useState('');
   const [subCategory,setSubCategory] = React.useState('');
   const [name , setName] = React.useState('');
@@ -72,6 +74,27 @@ function AdminPage(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [listOrders,setListOrders] = React.useState();
 
+  let [adName , setAdName] = React.useState();
+  let adminId = admintoken ? jwtDecode(admintoken) : ''
+
+
+  var getAdmin = () =>{
+      axios.get(`http://localhost:5000/api/admin/${adminId._id}`, {headers:{'Authorization':admintoken}})
+      .then(function (response) {
+          console.log('hel',response.data.data)   
+          setAdName(response.data.data.name) 
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
+
+
+  React.useEffect(()=>{
+      getAdmin();
+     
+  },[])
+
   let handleChangeNews = (e) =>{
     setNews(e.target.value)
   }
@@ -91,7 +114,6 @@ function AdminPage(props) {
   }
 
 
-  let admintoken = localStorage.getItem('admintoken');
   let handleClickOpen = () =>{
       setOpen(true);
   }
@@ -538,7 +560,7 @@ console.log(collection);
     let obj ={
       title: news,
       description: newsDescription,
-      cover: newsCover,
+      cover: newsCover[0],
       author: "Anonymous"
     }
     axios
@@ -569,6 +591,9 @@ console.log(collection);
     <div>
     <div style={{marginLeft:50,marginTop:50}}>
     <Avatar style={{width:100, height:100}} />
+    <Typography style={{marginLeft:30,marginTop:20}}>
+      {adName}
+    </Typography>
     </div>
       <Toolbar />
       <Divider />

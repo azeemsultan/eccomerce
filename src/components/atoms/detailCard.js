@@ -63,9 +63,12 @@ export default function RecipeReviewCard(props) {
         alt="Paella dish"
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+
+        <div style={{wordBreak:'break-all',height:40}}>
+        <Typography style={{overflow:'hidden',textOverflow: props.desc.length > 60 ? 'ellipsis':'clip',whiteSpace:'nowrap'}}  variant="body2" color="text.secondary">
         {props.desc}
         </Typography>
+        </div>
       </CardContent>
       <CardActions disableSpacing>
       <div style={{width:'100%'}}>
