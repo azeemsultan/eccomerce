@@ -26,6 +26,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
+import HomeIcon from '@mui/icons-material/Home';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
@@ -85,7 +86,13 @@ function VendorPage(props) {
   const [stockError,setStockError] = React.useState();
   const [imageError,setImageError] = React.useState();
   let [btnBool, setBtnBool] = React.useState();
+  let [filter,setFilter] = React.useState([])
 
+
+  let filtp = () =>{
+    console.log(products,'opgpopo')
+   setFilter(products.filter(t=> t.vendor._id === decode._id))
+  }
 
   let mobregex = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
   const [delivery,setDelivery] = React.useState('');
@@ -630,6 +637,7 @@ console.log(collection);
     getNews();
     getOrders();
     getVendor();
+    filtp();
   }, []);
 
 
@@ -786,9 +794,10 @@ console.log(collection);
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography style={{width:400}} variant="h6" noWrap component="div">
             Vendor Dashboard
           </Typography>
+
         </Toolbar>
       </AppBar>
       <Box
@@ -1123,8 +1132,9 @@ console.log(collection);
           </TableRow>
         </TableHead>
         <TableBody>
-          {products.map((row) => (
-            <TableRow
+          {filter.map((row) => (
+            
+           <TableRow
               key={row.name}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
@@ -1132,9 +1142,10 @@ console.log(collection);
                 {row.name}
               </TableCell>
               <TableCell align="right"><EditIcon  onClick={()=>handleClickOpen()}/> 
-              {open ? <EditProduct id={row._id} open={open} collection={collection} categories={categories} setOpen={setOpen} /> : null }
+              {open ? <EditProduct id={row._id} open={open} subCategory={subCategory} collection={collection} categories={categories} setOpen={setOpen} /> : null }
               </TableCell>
               <TableCell align="right"><DeleteIcon onClick={()=>deleteProduct(row._id)}/></TableCell>
+           
             </TableRow>
           ))}
         </TableBody>

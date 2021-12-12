@@ -16,6 +16,10 @@ import VMessage from './components/organism/vMessage';
 import Zapp from './components/organism/Stripe'
 import Services from './pages/services'
 import Cart from './pages/Cart';
+import WishList from './pages/wishList';
+import Search from './pages/home/Search';
+import AdminSignUp from './pages/AdminSignup';
+import VendorSignUp from './pages/VendorSignUp';
 
 
 
@@ -26,8 +30,12 @@ function App() {
     <div>
       <BrowserRouter>
       
+      <Route path="/adminRegister" component={AdminSignUp}/>
+      <Route path="/vendorRegister" component={VendorSignUp}/>
       <Route path="/blog" component={BlogPage}/>
       <Route path="/services" component={Services}/>
+      <Route path="/search" component={Search}/>
+      <Route path="/wishlist" component={WishList}/>
       <Route path="/cart" component={Cart}/>
       <Route path="/zapp" component={Zapp}/>
       <Route path="/message" component={Message}/>

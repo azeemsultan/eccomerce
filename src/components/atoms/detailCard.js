@@ -12,7 +12,9 @@ import ReactStars from "react-rating-stars-component";
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -33,11 +35,28 @@ let moveToProduct = (id) => {
 }
 
 export default function RecipeReviewCard(props) {
+  const { enqueueSnackbar } = useSnackbar();
+  let token = localStorage.getItem('token');
+  let userId = token ? jwtDecode(token) : ''
   const [expanded, setExpanded] = React.useState(false);
   let [rate, setRate] = React.useState();
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  let wishList = () => {
+
+    let obj = {
+      specs: [userId._id],
+    };
+
+    axios.patch(`http://localhost:5000/api/products/${props.id}`, obj
+    ,{ headers:{'Authorization':token} } )
+    enqueueSnackbar('Added to Wishlist !', {
+      variant: 'success',
+      autoHideDuration: 2000
+    });
+  }
 
 
   console.log(props,'this is props');
@@ -65,7 +84,7 @@ export default function RecipeReviewCard(props) {
       <CardContent>
 
         <div style={{wordBreak:'break-all',height:40}}>
-        <Typography style={{overflow:'hidden',textOverflow: props.desc.length > 60 ? 'ellipsis':'clip',whiteSpace:'nowrap'}}  variant="body2" color="text.secondary">
+        <Typography style={{overflow:'hidden',textOverflow: props?.desc?.length > 60 ? 'ellipsis':'clip',whiteSpace:'nowrap'}}  variant="body2" color="text.secondary">
         {props.desc}
         </Typography>
         </div>
@@ -75,7 +94,7 @@ export default function RecipeReviewCard(props) {
           
           <ReactStars
                           key={Math.floor(Math.random() * 10)}
-                          value={props.rate}
+                          value={Math.ceil(props.rate)}
                           size={24}
                           activeColor="#ffd700"
                         />
@@ -91,7 +110,7 @@ export default function RecipeReviewCard(props) {
         </IconButton>
         </div>
         <div style={{display:'flex',justifyContent:'flex-end',width:'100%'}}>
-        <IconButton aria-label="add to favorites">
+        <IconButton onClick={wishList} aria-label="add to favorites">
           <FavoriteIcon  />
         </IconButton>
         </div>

@@ -17,7 +17,10 @@ const HomePageList = () => {
         </li>
      
         <li>
-            <Button>Wishlist</Button>
+        <Button onClick={()=>{
+                window.location.href = "/wishlist"
+            }}
+            >Wishlist</Button>
         </li>
         <li>
             <Button onClick={()=>{

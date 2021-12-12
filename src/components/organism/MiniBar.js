@@ -43,7 +43,12 @@ const MiniBar = () => {
               }
   
               <div style={{position:'absolute',right:50}}>
-              <Link href="/login" style={{marginLeft:'30px'}}>
+              <Link 
+              onClick={()=>{
+                  localStorage.clear();
+                  window.location.href="/login"
+              }}
+              style={{marginLeft:'30px'}}>
               Logout
               </Link>
 

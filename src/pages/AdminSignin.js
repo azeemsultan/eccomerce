@@ -109,7 +109,7 @@ export default function AdminSignIn() {
         
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/adminRegister" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -23,6 +23,7 @@ const EditProduct = (props) => {
     const [category, setCategory] = React.useState('');
     const [subCategory,setSubCategory] = React.useState('');
     const [name , setName] = React.useState('');
+    const [subCategories, setSubCategories] = React.useState([]);
     const [shortDescription , setShortDescription] = React.useState('');
     const [collection, setCollection] = React.useState([]);
     const [categories, setCategories] = React.useState([]);
@@ -37,7 +38,7 @@ const EditProduct = (props) => {
     const [cate, setCate] = React.useState("");
     const [btnBool,setBtnBool] = React.useState(false);
 
-    let token = localStorage.getItem('token')
+    let vendorToken = localStorage.getItem('vendorToken')
 
     const handleChange = (event) => {
         setCate(event.target.value);
@@ -81,15 +82,32 @@ const EditProduct = (props) => {
         setPrice(event.target.value);
       };
     
+      
+  let getSubCategories = () => {
+    axios
+      .get("http://localhost:5000/api/subcategories", {
+        headers: {
+          Authorization:
+            vendorToken,
+        },
+      })
+      .then(function (response) {
+        setSubCategories(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
     
 console.log(props.id)
     useEffect(()=>{
      console.log('re rednered',props)
+     getSubCategories();
 
      axios
      .get(`http://localhost:5000/api/products/${props.id}`, {
        headers: {
-         Authorization:token
+         Authorization:vendorToken
        },
      })
      .then(function (response) {
@@ -100,6 +118,7 @@ console.log(props.id)
        setPrice(row.price);
        setStock(row.stock);
        setCategory(row.category.name);
+       setSubCategory(row?.subCategory?.name)
        setCate(row.productCollection.name);
        console.log('asfaasfsafsafas',row.productCollection.name)
      })
@@ -124,6 +143,12 @@ console.log(props.id)
       };
     */
 
+
+      
+  const handleChangeSubCategory = (event) => {
+    setSubCategory(event.target.value);
+  };
+
       console.log(cate.id);
       const handleClose = () => {
         props.setOpen(false);
@@ -134,16 +159,15 @@ console.log(props.id)
         let object = {
             name: name,
             chineseName: 'trash',
-            shortDescription: shortDescription,
+            subCategory: subCategory,
             description: description,
             category: category,
             productCollection: cate,
             price: price,
             stock: stock,
-            subCategory:'123123213131',
             cover: 'Image cover',
             specs: ['empty','empty'],
-            images: img[0]
+         
   
    
         }
@@ -152,7 +176,7 @@ console.log(props.id)
         axios
         .patch(`http://localhost:5000/api/products/${props.id}`, object,  {
           headers: {
-            'Authorization':token,
+            'Authorization':vendorToken,
             'Content-Type': 'application/json',
           },
         })
@@ -162,7 +186,7 @@ console.log(props.id)
             autoHideDuration: 2000
           });
           setTimeout(function() {
-            window.location.href = '/admin';
+           
           }, 2000);
         })
         .catch(function (error) {
@@ -267,14 +291,25 @@ console.log(props.id)
             style={{ marginRight: "10px" }}
           />
 
-          <TextField
-            fullWidth
-            name="shortDescription"
-            id="shortDescription"
-            label="Product Short Description"
-            value={shortDescription}
-            onChange={handleChangeShortDescription}
-          />
+<FormControl fullWidth >
+            <InputLabel id="subCategory">{subCategory}</InputLabel>
+            <Select
+              labelId="subCategory"
+              id="subCategory"
+              value={subCategory?.value}
+              required={true}
+              label="subCategory"
+              onChange={handleChangeSubCategory}
+            >
+              {subCategories.map(function (item, i) {
+                return (
+                  <MenuItem key={i} value={item._id}>
+                    {item.name}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </div>
         <div style={{ display: "flex", marginTop: 20 }}>
           <TextField
@@ -308,15 +343,7 @@ console.log(props.id)
         </div>
         <div style={{ display: "flex", marginTop: 20 }}>
         <div>
-                          <FileUpload
-                            onChange={uploadImage}
-                            file={image}
-                            setBtn={setBtnBool}
-                            up={img}
-                            setUp={setImg}
-                            temp={image}
-                           // success={success}
-                          />
+              
                      </div>
 
         </div>

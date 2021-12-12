@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -18,6 +19,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useSnackbar } from 'notistack';
+import { isTemplateHead } from 'typescript';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -61,11 +63,37 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function NavBar() {
 
+  const [search,setSearch] = React.useState();
   const { enqueueSnackbar } = useSnackbar();
   let token = localStorage.getItem('token');
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+  let arr = [
+    {
+      name: 'azeem',
+      desc: 'gdgd'
+    },
+    {
+      name: 'azexxem',
+      desc: 'gdgd'
+    },
+    {
+      name: 'azeexxxxxm',
+      desc: 'gdgd'
+    },
+    {
+      name: 'az112eem',
+      desc: 'gdgd'
+    }
+  ]
+
+  let handleSearch=(e)=>{
+    setSearch(e.target.value)
+
+  }
+
+  console.log(search)
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
@@ -140,15 +168,23 @@ export default function NavBar() {
             Shopify
           </Typography>
           </a>
-          <Search>
+          <Search >
             <SearchIconWrapper>
-              <SearchIcon />
+              <SearchIcon  />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              onChange={handleSearch}
+              value={search}
             />
           </Search>
+          <Button style={{color:'white'}} onClick={()=>{
+                window.location.href = `/search/${search}`;
+              }} >
+            Search 
+          </Button>
+  
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <IconButton size="large" aria-label="show 4 new mails" color="inherit">

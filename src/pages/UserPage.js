@@ -7,6 +7,7 @@ import { Button, Divider } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { Grid } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import HomeIcon from '@mui/icons-material/Home';
 import { TableCell,TableBody,TableRow,TableContainer,Paper,Table,TableHead } from "@mui/material";
 import { TextField } from "@mui/material";
 import Toolbar from "@mui/material/Toolbar";
@@ -157,7 +158,7 @@ React.useEffect(() => {
       <CssBaseline />
       <AppBar
         position="fixed"
-        style={{backgroundColor:'#44adbd'}}
+        style={{backgroundColor:'#0288d1'}}
         sx={{
           width:'100%',
      
@@ -173,9 +174,17 @@ React.useEffect(() => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography style={{width:400}} variant="h6" noWrap component="div">
             User Dashboard
           </Typography>
+          <div style={{display:'flex',width:'100%',justifyContent:'end'}}>
+        <HomeIcon 
+        style={{color:'white'}}
+        onClick={()=>{
+          window.location.href = "/"
+        }}
+        />
+          </div>
         </Toolbar>
       </AppBar>
       <Box
@@ -196,7 +205,7 @@ React.useEffect(() => {
     </Grid>
 
       <Grid item md={6} xs={12}>
-        <div style={{marginTop:'50px',display:'flex',borderRadius:'9px',padding:10,border:'#44adbd'}}>
+        <div style={{marginTop:'50px',display:'flex',borderRadius:'9px',padding:10,border:'#0288d1'}}>
         <img style={{margin:'0px auto',maxHeight:600,maxWidth:500,borderRadius:20}}
          src={newsCover === undefined || '' ? 'https://fyptest.blob.core.windows.net/images/photo-1524024973431-2ad916746881.jfif' : 
          `https://fyptest.blob.core.windows.net/images/${newsCover}`}/>
@@ -248,7 +257,7 @@ React.useEffect(() => {
           />
         </div>
         <div style={{ display: "flex", marginTop: 30 }}>
-        <Button onClick={saveInfo} style={{backgroundColor:'#44adbd',color:'white',width:'100px'}} >Save</Button>
+        <Button onClick={saveInfo} style={{backgroundColor:'#0288d1',color:'white',width:'100px'}} >Save</Button>
         </div>
         </div>
         </Grid>
@@ -266,7 +275,7 @@ React.useEffect(() => {
       <Toolbar />
       <TableContainer component={Paper}>
   <Table sx={{ minWidth: 650 }} aria-label="simple table">
-    <TableHead style={{backgroundColor:'#44adbd'}}>
+    <TableHead style={{backgroundColor:'#0288d1'}}>
       <TableRow >
       <TableCell style={{color:'white',fontWeight:'bold'}} align="left">UserID</TableCell>
         <TableCell style={{color:'white',fontWeight:'bold'}} align="left">User Name</TableCell>

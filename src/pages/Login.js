@@ -139,6 +139,10 @@ export default function Login() {
                   <Link href="register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
+                  &nbsp; &nbsp;
+                  <Link href="vendorLogin" variant="body2">
+                    {"Sign in/up as a Vendor"}
+                  </Link>
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />

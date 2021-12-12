@@ -1,17 +1,24 @@
-import { Grid,Button, TextField, Typography } from "@mui/material";
 import React, { useState, useEffect, useMemo } from "react";
-import Select from "../atoms/Select";
-import DetailCard from '../atoms/detailCard'
+import { Button, Divider, Grid } from "@mui/material";
+import MiniBar from '../../components/organism/MiniBar';
+import NavBar from '../../components/organism/NavBar';
+import HomePageList from '../../components/molecules/HomepageOptionList';
+import { TextField, Typography } from "@mui/material";
+import Select from "../../components/atoms/Select";
+import DetailCard from '../../components/atoms/detailCard'
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 
-const CategoriesItems = () => {
+const Search = () => {
 
-  const [products,setProducts] = useState([]);
+
+    const [products,setProducts] = useState([]);
   const [minPrice,setMinPrice] = useState(0);
   const [maxPrice,setMaxPrice] = useState(0);
 
   let token = localStorage.getItem("token");
+  let jwt = token ? jwtDecode(token): '';
   var url = window.location.pathname;
   var category = url.substring(url.lastIndexOf("/") + 1);
   var link = category.replace('%20',' ');
@@ -73,18 +80,38 @@ const CategoriesItems = () => {
   },[products])
 
 
-  return (
-    <Grid container>
+
+    return (
+     <Grid container>
+         <Grid item md={12}>
+             <MiniBar/>
+             <NavBar/>
+         </Grid>
+          {/*  Categories Buttons   */}
+      <Grid item md={1}></Grid>
+
+<Grid item md={10}>
+  <HomePageList />
+
+  <Divider />
+</Grid>
+
+<Grid item md={1}></Grid>
+         <Grid item md={12}>
+             <br/>
+             <br/>
+         </Grid>
+         <Grid item md={1}></Grid>
+         <Grid item md={10}>
+         <Grid container>
       <Grid item md={12}>
-        <Typography variant="h4">Deals and Promotions</Typography>
+        <Typography variant="h5">Searches:</Typography>
       </Grid>
       <Grid item md={12}>
           <br/>
       </Grid>
       <Grid item md={12}>
-        <Typography variant="subtitle1">
-          Shop Today’s Deals, Lightning Deals, and limited-time discounts
-        </Typography>
+  
         <br/>
         <Typography variant="h6">
           
@@ -93,39 +120,7 @@ const CategoriesItems = () => {
         </Typography>
       </Grid>
 
-      <Grid item md={7}>
-          <div style={{display:'flex'}}>
-        <label style={{marginRight:'20px'}}>Sort by:</label> 
-        <Select />
-
-        <TextField
-        style={{marginLeft:20}}
-        label="Min price"
-        value={minPrice}
-        onChange={handleMinPrice}
-        />
-
-<TextField
-        style={{marginLeft:20}}
-        label="Max price"
-        value={maxPrice}
-        onChange={handleMaxPrice}
-        />
-
-<TextField
-        style={{marginLeft:20}}
-        label="Category"
-        />
-        </div>
-        <Button onClick={handleFilter}>
-          Apply
-        </Button>
-      </Grid>
-      <Grid item md={5}></Grid>
-      <Grid item md={12}>
-          <br/>
-          <br/>
-      </Grid>
+ 
       <Grid item md={12}>
       <Grid container>
       {products?.map(function (item, i) {
@@ -150,7 +145,10 @@ const CategoriesItems = () => {
 
       </Grid>
     </Grid>
-  );
-};
-
-export default CategoriesItems;
+         </Grid>
+         <Grid item md={1}></Grid>
+     </Grid>
+      );
+}
+ 
+export default Search;
