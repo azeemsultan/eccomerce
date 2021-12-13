@@ -30,16 +30,41 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+
+  const [phone,setPhone] = React.useState('');
+  const [phoneError, setPhoneError] = React.useState();
+  const [vName,setVName] = React.useState('');
+  let mobregex = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
+
+  const handleVName=(e)=>{
+    setVName(e.target.value.replace(/[0-9]/g, ''));
+  }
+
+  const handlePhone=(e)=>{
+    if(mobregex.test(e.target.value))
+    {
+      console.log('your email is vaid')
+      setPhoneError(true);
+    }
+    else
+    {
+      console.log('your email is invaid')
+      setPhoneError(false);
+    }
+    setPhone(e.target.value);
+  }
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     let obj ={
-      name: data.get('name'),
+      name: vName,
       username: data.get('userName'),
       email: data.get('email'),
       password: data.get('password'),
-      phoneNumber: data.get('phone')
+      phoneNumber: phone
     }
     
     axios.post('http://localhost:5000/api/users', obj)
@@ -71,22 +96,24 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
                   name="name"
-                  required
+                  required={true}
                   fullWidth
                   id="name"
+                  value={vName}
+                  onChange={handleVName}
                   label="Name"
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  required={true}
                   fullWidth
                   id="userName"
                   label="Username"
@@ -96,7 +123,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  required={true}
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -106,14 +133,17 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  required={true}
                   fullWidth
                   id="phone"
                   label="phone"
                   name="phone"
                   autoComplete="phone"
+                  value={phone}
+                  onChange={handlePhone}
                 />
               </Grid>
+              {phoneError == false ? <div style={{color:'red',marginTop:10,marginLeft:20}}>Incorrect Mobile Number.</div>:<div></div>}
               <Grid item xs={12}>
                 <TextField
                   required

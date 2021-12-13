@@ -39,16 +39,40 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function VendorSignUp({classes}) {
+
+  const [phone,setPhone] = React.useState('');
+  const [phoneError, setPhoneError] = React.useState();
+  const [vName,setVName] = React.useState('');
+  let mobregex = /^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/;
+
+  const handleVName=(e)=>{
+    setVName(e.target.value.replace(/[0-9]/g, ''));
+  }
+
+  const handlePhone=(e)=>{
+    if(mobregex.test(e.target.value))
+    {
+      console.log('your email is vaid')
+      setPhoneError(true);
+    }
+    else
+    {
+      console.log('your email is invaid')
+      setPhoneError(false);
+    }
+    setPhone(e.target.value);
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     let obj ={
-      name: data.get('name'),
+      name: vName,
       username: data.get('userName'),
       email: data.get('email'),
       password: data.get('password'),
-      phoneNumber: data.get('phone')
+      phoneNumber: phone
     }
     
     axios.post('http://localhost:5000/api/vendors', obj)
@@ -61,8 +85,7 @@ export default function VendorSignUp({classes}) {
     });
 
   };
-
-
+  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -81,22 +104,24 @@ export default function VendorSignUp({classes}) {
           <Typography component="h1" variant="h5">
             Vendor Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" Validate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
                   name="name"
-                  required
+                  required={true}
                   fullWidth
                   id="name"
                   label="Name"
+                  value={vName}
+                  onChange={handleVName}
                   autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+                  required={true}
                   fullWidth
                   id="userName"
                   label="Username"
@@ -106,7 +131,7 @@ export default function VendorSignUp({classes}) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  required={true}
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -116,13 +141,17 @@ export default function VendorSignUp({classes}) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  required={true}
                   fullWidth
+                  name="Mobile"  
                   id="phone"
                   label="phone"
-                  name="phone"
-                  autoComplete="phone"
+                  type="number"
+                  value={phone}
+                  onChange={handlePhone}
                 />
+
+              {phoneError == false ? <div style={{color:'red',marginTop:10}}>Incorrect Mobile Number.</div>:<div></div>}
               </Grid>
               <Grid item xs={12}>
                 <TextField
