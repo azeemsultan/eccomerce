@@ -586,7 +586,7 @@ console.log(collection);
         },
       })
       .then(function (response) {
-        setProducts(response.data.data);
+        setProducts(response.data.data.filter(t=>t?.vendor._id == decode._id));
       })
       .catch(function (error) {
         console.log(error);
@@ -1132,7 +1132,7 @@ console.log(collection);
           </TableRow>
         </TableHead>
         <TableBody>
-          {filter.map((row) => (
+          {products.map((row) => (
             
            <TableRow
               key={row.name}

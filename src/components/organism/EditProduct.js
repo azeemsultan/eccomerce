@@ -117,9 +117,9 @@ console.log(props.id)
        setDescription(row.description);
        setPrice(row.price);
        setStock(row.stock);
-       setCategory(row.category.name);
-       setSubCategory(row?.subCategory?.name)
-       setCate(row.productCollection.name);
+       setCategory(row.category._id);
+       setSubCategory(row?.subCategory?._id)
+       setCate(row.productCollection._id);
        console.log('asfaasfsafsafas',row.productCollection.name)
      })
      .catch(function (error) {
@@ -167,6 +167,7 @@ console.log(props.id)
             stock: stock,
             cover: 'Image cover',
             specs: ['empty','empty'],
+            images: img
          
   
    
@@ -343,6 +344,17 @@ console.log(props.id)
         </div>
         <div style={{ display: "flex", marginTop: 20 }}>
         <div>
+        <div>
+                          <FileUpload
+                            onChange={uploadImage}
+                            btn={btnBool}
+                            setUpBtn={setBtnBool}
+                            up={img}
+                            setUp={setImg}
+                        
+                           // success={success}
+                          />
+                     </div>
               
                      </div>
 
